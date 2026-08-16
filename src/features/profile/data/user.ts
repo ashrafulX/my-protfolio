@@ -10,11 +10,8 @@ export const USER: User = {
   bio: "Building with code. Learning one problem at a time.",
   timeZone: "Asia/Dhaka",
   flipSentences: [
-    "Software Developer",
+    "Computer Science Student",
     "Competitive Programmer",
-    "Django Developer",
-    "C++ Enthusiast",
-    "CSE Undergraduate",
   ],
   address: "Dhaka, Bangladesh",
   // TODO: replace with your real phone number(s), base64 encoded (https://t.io.vn/base64-string-converter)
@@ -24,7 +21,7 @@ export const USER: User = {
   email: "YXNocmFmdWx3aG9AZ21haWwuY29t", // ashrafulwho@gmail.com
   // TODO: replace with your real website/domain once you have one
   website: "https://ashrafulx.vercel.app",
-  jobTitle: "Software Developer",
+  jobTitle: "Jr software Engineer",
   // Fresher — no professional job yet, so these are placeholders describing my
   // current focus. Once I start working, replace with { title, company, website }.
   jobs: [
@@ -34,18 +31,16 @@ export const USER: User = {
       website: "#",
     },
     {
-      title: "Competitive Programmer",
-      company: "ICPC Preparation",
-      website: "#",
+      title: "",
+      company:"",
+      website: "",
     },
   ],
   about: `
-- **Computer Science student** and **competitive programmer**, currently pursuing my Bachelor's degree.
-- Comfortable across **web development** (Django, JavaScript) and **competitive programming** (C++), with a growing interest in machine learning and computer vision.
-- Currently researching **Tiny Object Detection from UAV Images** — more details coming soon as the work progresses.
-- Preparing for **ICPC** and other programming contests, solving problems in C++.
-- **Fresher** — actively looking for opportunities to apply and grow my skills professionally.
-- **Mission:** Keep building, keep solving problems, and keep learning — one project and one contest at a time.
+- **Computer Science Student** at **Northern University Bangladesh**.
+- **Competitive Programmer** preparing for **ICPC** and other programming contests.
+- Continuously improving my problem-solving skills and learning through coding challenges.
+- Building my foundation in software development while growing as a programmer and student.
 `,
   avatar: "https://ui-avatars.com/api/?name=Md+Ashraful+Islam&background=0D8ABC&color=fff&size=256",
   ogImage: "https://ui-avatars.com/api/?name=Md+Ashraful+Islam&background=0D8ABC&color=fff&size=630",
@@ -54,13 +49,10 @@ export const USER: User = {
     "md ashraful islam",
     "ashraful islam",
     "ashrafulx",
-    "software developer",
-    "competitive programmer",
-    "django developer",
-    "javascript developer",
-    "c++ programmer",
-    "web developer",
     "computer science student",
+    "competitive programmer",
+    "icpc preparation",
+    "cse undergraduate",
   ],
   dateCreated: "2026-07-17", // YYYY-MM-DD
 };
