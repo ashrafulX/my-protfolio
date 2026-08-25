@@ -12,6 +12,7 @@ import { ProfileCover } from "@/features/profile/components/profile-cover";
 import { ProfileHeader } from "@/features/profile/components/profile-header";
 import { Projects } from "@/features/profile/components/projects";
 import { Research } from "@/features/profile/components/research";
+import { Resume } from "@/features/profile/components/resume";
 import { SocialLinks } from "@/features/profile/components/social-links";
 import { TeckStack } from "@/features/profile/components/teck-stack";
 import { USER } from "@/features/profile/data/user";
@@ -33,6 +34,9 @@ export default function Page() {
         <Separator />
 
         <Overview />
+        <Separator />
+
+        <Resume />
         <Separator />
 
         <SocialLinks />

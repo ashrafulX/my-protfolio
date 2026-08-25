@@ -17,6 +17,6 @@ export const AWARDS: Award[] = [
     date: "2025-12",
     grade: "Personal Achievement",
     description:
-      "Solved 1000+ algorithmic problems across Codeforces, LeetCode, and CodeChef.",
+      "Solved 1000+ algorithmic problems across [Codeforces](https://codeforces.com/profile/iashraf), [LeetCode](https://leetcode.com/u/ashrafulx/), and [CodeChef](https://www.codechef.com/users/iashraful).",
   },
 ];

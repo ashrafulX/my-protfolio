@@ -21,6 +21,9 @@ export const USER: User = {
   email: "YXNocmFmdWx3aG9AZ21haWwuY29t", // ashrafulwho@gmail.com
   // TODO: replace with your real website/domain once you have one
   website: "https://historoam.com",
+  // resume link
+  resumeUrl:
+    "https://drive.google.com/file/d/1Kc6RL2Z7bJdBbA12L5JMKcOA58-5PXkh/view?usp=sharing",
   jobTitle: "Django & React Developer",
   jobs: [
     {

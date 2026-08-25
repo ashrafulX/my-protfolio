@@ -21,6 +21,8 @@ export type User = {
   email: string;
   /** Personal/homepage URL */
   website: string;
+  /** Public URL to the downloadable resume */
+  resumeUrl: string;
   /** Primary/current role shown on profile */
   jobTitle: string;
   /** Work history entries */

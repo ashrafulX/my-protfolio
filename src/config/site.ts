@@ -2,7 +2,7 @@ import { USER } from "@/features/profile/data/user";
 import type { NavItem } from "@/types/nav";
 
 export const SITE_INFO = {
-  name: USER.displayName,
+  name: "Ashraful's Protfolio",
   url: process.env.APP_URL || USER.website,
   ogImage: USER.ogImage,
   description: USER.bio,
@@ -16,7 +16,7 @@ export const META_THEME_COLORS = {
 
 export const MAIN_NAV: NavItem[] = [
   {
-    title: "Portfolio",
+    title: "Ashraful's Protfolio",
     href: "/",
   },
   {
