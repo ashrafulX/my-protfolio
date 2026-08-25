@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 import path from "path";
 
 const isGitHubPages = process.env.GITHUB_ACTIONS === "true";
+const githubPagesBasePath = process.env.GITHUB_PAGES_BASE_PATH || undefined;
 const rewrites: NextConfig["rewrites"] = async () => {
   return [
     {
@@ -17,7 +18,7 @@ const rewrites: NextConfig["rewrites"] = async () => {
 
 const nextConfig: NextConfig = {
   output: isGitHubPages ? "export" : undefined,
-  basePath: isGitHubPages ? "/my-protfolio" : undefined,
+  basePath: isGitHubPages ? githubPagesBasePath : undefined,
   trailingSlash: isGitHubPages,
   reactStrictMode: true,
   transpilePackages: ["next-mdx-remote"],

@@ -18,7 +18,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      APP_URL: https://ashrafulx.github.io/my-protfolio
+      APP_URL: https://ashraful.site
+      GITHUB_PAGES_BASE_PATH: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
