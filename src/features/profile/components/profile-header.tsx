@@ -19,35 +19,6 @@ export function ProfileHeader() {
             fetchPriority="high"
           />
         </div>
-
-        <SimpleTooltip content="I'm from Bangladesh">
-          {/* Flag of Bangladesh */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="absolute top-0 -left-px h-8 sm:h-9"
-            shapeRendering="geometricPrecision"
-            textRendering="geometricPrecision"
-            imageRendering="optimizeQuality"
-            fillRule="evenodd"
-            clipRule="evenodd"
-            viewBox="0 0 513 357.071"
-          >
-            <rect width="513" height="357.071" fill="#006A4E" />
-
-            <circle cx="230.85" cy="178.5355" r="71.4142" fill="#F42A41" />
-
-            <rect
-              fill="none"
-              stroke="#CCC"
-              strokeWidth=".64"
-              strokeMiterlimit="22.926"
-              x=".32"
-              y=".319"
-              width="512.359"
-              height="356.43"
-            />
-          </svg>
-        </SimpleTooltip>
       </div>
 
       <div className="flex flex-1 flex-col">

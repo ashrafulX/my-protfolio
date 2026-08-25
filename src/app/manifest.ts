@@ -11,7 +11,7 @@ export default function manifest(): MetadataRoute.Manifest {
     description: SITE_INFO.description,
     icons: [
       {
-        src: "/images/brand/favicon.svg",
+        src: "/images/brand/favicon.jpeg",
         type: "image/svg+xml",
         sizes: "any",
         purpose: "any",
