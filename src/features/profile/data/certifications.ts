@@ -1,24 +1,39 @@
 import type { Certification } from "../types/certifications";
 
-// Intentionally limited to 2 placeholder certifications for now.
-// Add more entries here manually once you actually earn them.
 export const CERTIFICATIONS: Certification[] = [
   {
-    title: "Certification Title 1 (placeholder)",
-    issuer: "Issuing Organization",
-    issuerLogoURL:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=Certification+One",
+    title: "CodeChef 2 Star Coder",
+    issuer: "Phitron",
     issueDate: "2026-01-01",
-    credentialID: "TBD",
+    credentialID: "",
     credentialURL: "#",
   },
   {
-    title: "Certification Title 2 (placeholder)",
-    issuer: "Issuing Organization",
-    issuerLogoURL:
-      "https://api.dicebear.com/7.x/shapes/svg?seed=Certification+Two",
+    title: "Introduction to Python",
+    issuer: "Phitron",
     issueDate: "2026-01-01",
-    credentialID: "TBD",
+    credentialID: "",
+    credentialURL: "#",
+  },
+  {
+    title: "Intermediate Python",
+    issuer: "Phitron",
+    issueDate: "2026-01-01",
+    credentialID: "",
+    credentialURL: "#",
+  },
+  {
+    title: "Intermediate Machine Learning",
+    issuer: "Phitron",
+    issueDate: "2026-01-01",
+    credentialID: "",
+    credentialURL: "#",
+  },
+  {
+    title: "Intermediate Deep Learning",
+    issuer: "Phitron",
+    issueDate: "2026-01-01",
+    credentialID: "",
     credentialURL: "#",
   },
 ];

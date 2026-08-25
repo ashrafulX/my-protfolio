@@ -53,51 +53,72 @@ export function ProjectItem({
           )}
 
           <div className="flex-1 border-l border-dashed border-edge">
-            <CollapsibleTrigger className="flex w-full items-center gap-4 p-4 pr-2 text-left select-none">
-              <div className="flex-1">
-                <h3 className="mb-1 leading-snug font-medium text-balance">
-                  {project.title}
-                </h3>
+            <div className="flex w-full items-center gap-4 p-4 pr-2">
+              <CollapsibleTrigger className="flex min-w-0 flex-1 items-center gap-4 text-left select-none">
+                <div className="min-w-0 flex-1">
+                  <h3 className="mb-1 leading-snug font-medium text-balance">
+                    {project.title}
+                  </h3>
 
-                <dl className="text-sm text-muted-foreground">
-                  <dt className="sr-only">Period</dt>
-                  <dd className="flex items-center gap-0.5">
-                    <span>{start}</span>
-                    <span className="font-mono">—</span>
-                    {isOngoing ? (
-                      <>
-                        <InfinityIcon
-                          className="size-4.5 translate-y-[0.5px]"
-                          aria-hidden
-                        />
-                        <span className="sr-only">Present</span>
-                      </>
-                    ) : (
-                      <span>{end}</span>
-                    )}
-                  </dd>
-                </dl>
-              </div>
-
-              <SimpleTooltip content="Open Project Link">
-                <a
-                  className="relative flex size-6 shrink-0 items-center justify-center text-muted-foreground after:absolute after:-inset-2 hover:text-foreground"
-                  href={addQueryParams(project.link, UTM_PARAMS)}
-                  target="_blank"
-                  rel="noopener"
+                  <dl className="text-sm text-muted-foreground">
+                    <dt className="sr-only">Period</dt>
+                    <dd className="flex items-center gap-0.5">
+                      <span>{start}</span>
+                      <span className="font-mono">—</span>
+                      {isOngoing ? (
+                        <>
+                          <InfinityIcon
+                            className="size-4.5 translate-y-[0.5px]"
+                            aria-hidden
+                          />
+                          <span className="sr-only">Present</span>
+                        </>
+                      ) : (
+                        <span>{end}</span>
+                      )}
+                    </dd>
+                  </dl>
+                </div>
+                <div
+                  className="shrink-0 text-muted-foreground [&_svg]:size-4"
+                  aria-hidden
                 >
-                  <LinkIcon className="pointer-events-none size-4" />
-                  <span className="sr-only">Open Project Link</span>
-                </a>
-              </SimpleTooltip>
+                  <CollapsibleChevronsIcon />
+                </div>
+              </CollapsibleTrigger>
 
-              <div
-                className="shrink-0 text-muted-foreground [&_svg]:size-4"
-                aria-hidden
-              >
-                <CollapsibleChevronsIcon />
+              <div className="flex shrink-0 items-center gap-3 text-sm text-muted-foreground">
+                {project.liveLink && (
+                  <SimpleTooltip content="Open Live Project">
+                    <a
+                      className="flex items-center gap-1 hover:text-foreground"
+                      href={addQueryParams(project.liveLink, UTM_PARAMS)}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      <span>Live</span>
+                      <LinkIcon className="size-3.5" aria-hidden />
+                      <span className="sr-only">Open Live Project</span>
+                    </a>
+                  </SimpleTooltip>
+                )}
+
+                {project.githubLink && (
+                  <SimpleTooltip content="Open GitHub Repository">
+                    <a
+                      className="flex items-center gap-1 hover:text-foreground"
+                      href={addQueryParams(project.githubLink, UTM_PARAMS)}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      <span>GitHub</span>
+                      <Icons.github className="size-3.5" aria-hidden />
+                      <span className="sr-only">Open GitHub Repository</span>
+                    </a>
+                  </SimpleTooltip>
+                )}
               </div>
-            </CollapsibleTrigger>
+            </div>
           </div>
         </div>
 

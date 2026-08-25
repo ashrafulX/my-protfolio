@@ -18,6 +18,14 @@ export const TECH_STACK: TechStack[] = [
       "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg",
   },
   {
+    key: "csharp",
+    title: "C#",
+    href: "https://learn.microsoft.com/en-us/dotnet/csharp/",
+    categories: ["Language"],
+    iconUrl:
+      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg",
+  },
+  {
     key: "python",
     title: "Python",
     href: "https://www.python.org/",
@@ -39,6 +47,30 @@ export const TECH_STACK: TechStack[] = [
     categories: ["Framework"],
     iconUrl:
       "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg",
+  },
+  {
+    key: "django-rest-framework",
+    title: "Django REST Framework",
+    href: "https://www.django-rest-framework.org/",
+    categories: ["Framework", "Backend"],
+    iconUrl:
+      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/djangorest/djangorest-original.svg",
+  },
+  {
+    key: "fastapi",
+    title: "FastAPI",
+    href: "https://fastapi.tiangolo.com/",
+    categories: ["Framework", "Backend"],
+    iconUrl:
+      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg",
+  },
+  {
+    key: "dotnet",
+    title: ".NET",
+    href: "https://dotnet.microsoft.com/",
+    categories: ["Framework"],
+    iconUrl:
+      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dot-net/dot-net-original.svg",
   },
   {
     key: "mysql",
@@ -135,5 +167,19 @@ export const TECH_STACK: TechStack[] = [
     categories: ["Operating System"],
     iconUrl:
       "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg",
+  },
+  {
+    key: "data-structures-algorithms",
+    title: "Data Structures & Algorithms",
+    href: "https://en.wikipedia.org/wiki/Algorithms",
+    categories: ["Core Concepts"],
+    iconUrl: "https://api.iconify.design/mdi:graph-outline.svg",
+  },
+  {
+    key: "object-oriented-programming",
+    title: "Object-Oriented Programming",
+    href: "https://en.wikipedia.org/wiki/Object-oriented_programming",
+    categories: ["Core Concepts"],
+    iconUrl: "https://api.iconify.design/mdi:shape-outline.svg",
   },
 ];

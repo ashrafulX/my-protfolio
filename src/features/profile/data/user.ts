@@ -20,29 +20,19 @@ export const USER: User = {
   // TODO: replace with your real email, base64 encoded
   email: "YXNocmFmdWx3aG9AZ21haWwuY29t", // ashrafulwho@gmail.com
   // TODO: replace with your real website/domain once you have one
-  website: "https://ashrafulx.vercel.app",
-  jobTitle: "Jr software Engineer",
-  // Fresher — no professional job yet, so these are placeholders describing my
-  // current focus. Once I start working, replace with { title, company, website }.
+  website: "https://historoam.com",
+  jobTitle: "Django & React Developer",
   jobs: [
     {
-      title: "Computer Science Student",
-      company: "Northern University Bangladesh",
-      website: "#",
-    },
-    {
-      title: "",
-      company:"",
+      title: "Django & React Developer",
+      company: "",
       website: "",
     },
   ],
   about: `
-- **Computer Science Student** at **Northern University Bangladesh**.
-- **Competitive Programmer** preparing for **ICPC** and other programming contests.
-- Continuously improving my problem-solving skills and learning through coding challenges.
-- Building my foundation in software development while growing as a programmer and student.
+I am a Computer Science student at **Northern University Bangladesh** and a Django & React developer focused on building scalable, user-friendly web applications. I combine strong problem-solving skills, developed through competitive programming, with practical experience in Django, React, and Tailwind CSS.
 `,
-  avatar: "https://ui-avatars.com/api/?name=Md+Ashraful+Islam&background=0D8ABC&color=fff&size=256",
+  avatar: "/images/profile/avatar.jpg",
   ogImage: "https://ui-avatars.com/api/?name=Md+Ashraful+Islam&background=0D8ABC&color=fff&size=630",
   namePronunciationUrl: "",
   keywords: [

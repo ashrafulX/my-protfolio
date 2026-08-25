@@ -21,4 +21,11 @@ export const SOCIAL_LINKS: SocialLink[] = [
     description: "@ashrafulx",
     href: "https://x.com/ashrafulx",
   },
+  {
+    icon: "https://cdn.simpleicons.org/leetcode/FFA116",
+    title: "LeetCode",
+    description: "@ashrafulx",
+    href: "https://leetcode.com/u/ashrafulx/",
+    padding: true,
+  },
 ];

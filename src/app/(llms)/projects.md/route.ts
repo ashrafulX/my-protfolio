@@ -3,9 +3,15 @@ import { PROJECTS } from "@/features/profile/data/projects";
 const content = `# Projects
 
 ${PROJECTS.map((item) => {
+  const links = [
+    item.liveLink && `Live URL: ${item.liveLink}`,
+    item.githubLink && `GitHub URL: ${item.githubLink}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
   const skills = `\n\nSkills: ${item.skills.join(", ")}`;
   const description = item.description ? `\n\n${item.description.trim()}` : "";
-  return `## ${item.title}\n\nProject URL: ${item.link}${skills}${description}`;
+  return `## ${item.title}\n\n${links}${skills}${description}`;
 }).join("\n\n")}
 `;
 
