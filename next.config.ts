@@ -1,7 +1,24 @@
 import type { NextConfig } from "next";
 import path from "path";
 
+const isGitHubPages = process.env.GITHUB_ACTIONS === "true";
+const rewrites: NextConfig["rewrites"] = async () => {
+  return [
+    {
+      source: "/blog/:slug.mdx",
+      destination: "/blog.mdx/:slug",
+    },
+    {
+      source: "/components/:slug.mdx",
+      destination: "/blog.mdx/:slug",
+    },
+  ];
+};
+
 const nextConfig: NextConfig = {
+  output: isGitHubPages ? "export" : undefined,
+  basePath: isGitHubPages ? "/my-protfolio" : undefined,
+  trailingSlash: isGitHubPages,
   reactStrictMode: true,
   transpilePackages: ["next-mdx-remote"],
   // TODO: replace with your own machine's hostname if you use this dev feature
@@ -11,6 +28,7 @@ const nextConfig: NextConfig = {
   },
   devIndicators: false,
   images: {
+    unoptimized: isGitHubPages,
     remotePatterns: [
       {
         protocol: "https",
@@ -20,18 +38,7 @@ const nextConfig: NextConfig = {
     ],
     qualities: [75, 100],
   },
-  async rewrites() {
-    return [
-      {
-        source: "/blog/:slug.mdx",
-        destination: "/blog.mdx/:slug",
-      },
-      {
-        source: "/components/:slug.mdx",
-        destination: "/blog.mdx/:slug",
-      },
-    ];
-  },
+  ...(isGitHubPages ? {} : { rewrites }),
   // async headers() {
   //   return [
   //     {

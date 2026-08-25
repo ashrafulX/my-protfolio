@@ -3,10 +3,10 @@ import { join } from "node:path";
 
 import { ImageResponse } from "next/og";
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
+export const dynamic = "force-static";
 
-  const title = searchParams.get("title");
+export async function GET() {
+  const title = "Ashraful's Protfolio";
 
   const robotoCondensedMedium = await readFile(
     join(process.cwd(), "src/assets/fonts/RobotoCondensed-Medium.ttf")

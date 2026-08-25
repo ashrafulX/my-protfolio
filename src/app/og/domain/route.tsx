@@ -3,11 +3,11 @@ import { join } from "node:path";
 
 import { ImageResponse } from "next/og";
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
+export const dynamic = "force-static";
 
-  const domain = searchParams.get("domain");
-  const isForSale = searchParams.get("sale") === "true";
+export async function GET() {
+  const domain = "ashrafulx.github.io";
+  const isForSale = false;
 
   const magistralMedium = await readFile(
     join(process.cwd(), "src/assets/fonts/Magistral-Medium.ttf")
