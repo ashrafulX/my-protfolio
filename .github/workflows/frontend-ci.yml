@@ -1,0 +1,42 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.25.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: Frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        working-directory: Frontend
+        run: pnpm install --frozen-lockfile
+
+      - name: Check lint
+        working-directory: Frontend
+        run: pnpm lint
+
+      - name: Check types
+        working-directory: Frontend
+        run: pnpm check-types
+
+      - name: Build
+        working-directory: Frontend
+        run: pnpm build

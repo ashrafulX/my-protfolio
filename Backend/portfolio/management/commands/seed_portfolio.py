@@ -41,7 +41,7 @@ class Command(BaseCommand):
             "name": "Md. Ashraful Islam", "professional_title": "Django & React Developer",
             "short_title": "Django & React Developer", "email": "ashrafulwho@gmail.com",
             "phone": "", "location": "Dhaka, Bangladesh", "pronouns": "he/him",
-            "website": "https://historoam.com", "github_username": "ashrafulX",
+            "website": "https://historoam.com", "github_username": "ashrafulx",
             "timezone": "Asia/Dhaka",
             "hero_description": "Building with code. Learning one problem at a time.",
             "seo_keywords": ["md ashraful islam", "ashraful islam", "ashrafulx", "computer science student", "competitive programmer", "icpc preparation", "cse undergraduate"],
@@ -83,7 +83,7 @@ class Command(BaseCommand):
 
         social_links = [
             ("LinkedIn", "@ashrafulx", "https://linkedin.com/in/ashrafulx", "https://assets.chanhdai.com/images/link-icons/linkedin.webp?t=1759581475"),
-            ("GitHub", "@ashrafulX", "https://github.com/ashrafulX", "https://assets.chanhdai.com/images/link-icons/github.webp?t=1759581475"),
+            ("GitHub", "@ashrafulx", "https://github.com/ashrafulx", "https://assets.chanhdai.com/images/link-icons/github.webp?t=1759581475"),
             ("X (Formerly Twitter)", "@ashrafulx", "https://x.com/ashrafulx", "https://assets.chanhdai.com/images/link-icons/x.webp?t=1759581475"),
             ("LeetCode", "@ashrafulx", "https://leetcode.com/u/ashrafulx/", "https://cdn.simpleicons.org/leetcode/FFA116"),
         ]

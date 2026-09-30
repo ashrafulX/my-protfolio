@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, Subquery
 from django.utils import timezone
 from rest_framework import generics
 from rest_framework.response import Response
@@ -82,8 +82,13 @@ class SkillListView(generics.ListAPIView):
 
 class SocialLinkListView(generics.ListAPIView):
     serializer_class = SocialLinkSerializer
-    queryset = SocialLink.objects.filter(is_visible=True)
     pagination_class = None
+
+    def get_queryset(self):
+        profile_github_username = Profile.objects.order_by("pk").values("github_username")[:1]
+        return SocialLink.objects.filter(is_visible=True).annotate(
+            profile_github_username=Subquery(profile_github_username)
+        )
 
 
 class AchievementListView(generics.ListAPIView):

@@ -139,14 +139,14 @@ class SocialLinkSerializer(serializers.ModelSerializer):
 
     def get_description(self, obj):
         if obj.platform.lower() == "github":
-            profile = Profile.objects.first()
-            return f"@{profile.github_username}" if profile and profile.github_username else ""
+            username = getattr(obj, "profile_github_username", None)
+            return f"@{username}" if username else obj.username
         return obj.username
 
     def get_href(self, obj):
         if obj.platform.lower() == "github":
-            profile = Profile.objects.first()
-            return f"https://github.com/{profile.github_username}" if profile and profile.github_username else ""
+            username = getattr(obj, "profile_github_username", None)
+            return f"https://github.com/{username}" if username else obj.url
         return obj.url
 
 

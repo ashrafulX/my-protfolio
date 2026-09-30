@@ -2,17 +2,29 @@ import os
 import secrets
 from pathlib import Path
 
-import dj_database_url
 from dotenv import load_dotenv
 from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
-DEBUG = os.getenv("DEBUG", "False").lower() in {"1", "true", "yes"}
+
+
+def env_bool(name, default=False):
+    value = os.getenv(name)
+    return default if value is None else value.lower() in {"1", "true", "yes", "on"}
+
+
+DEBUG = env_bool("DEBUG", False)
 SECRET_KEY = os.getenv("SECRET_KEY") or (secrets.token_urlsafe(48) if DEBUG else None)
 if not SECRET_KEY:
     raise ImproperlyConfigured("Set SECRET_KEY in the Backend environment before starting Django.")
+
 ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if host.strip()]
+for vercel_host_var in ("VERCEL_URL", "VERCEL_PROJECT_PRODUCTION_URL"):
+    vercel_host = os.getenv(vercel_host_var, "").strip()
+    if vercel_host:
+        ALLOWED_HOSTS.append(vercel_host.removeprefix("https://").removeprefix("http://").split("/", 1)[0])
+ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -28,6 +40,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -50,14 +63,42 @@ TEMPLATES = [
         ]},
     }
 ]
-WSGI_APPLICATION = "config.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.app"
 ASGI_APPLICATION = "config.asgi.application"
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+POSTGRES_DB = os.getenv("POSTGRES_DB")
+POSTGRES_USER = os.getenv("POSTGRES_USER")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+POSTGRES_HOST = os.getenv("POSTGRES_HOST")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5432")
+
+missing_database_settings = [
+    name
+    for name, value in {
+        "POSTGRES_DB": POSTGRES_DB,
+        "POSTGRES_USER": POSTGRES_USER,
+        "POSTGRES_PASSWORD": POSTGRES_PASSWORD,
+        "POSTGRES_HOST": POSTGRES_HOST,
+    }.items()
+    if not value
+]
+if missing_database_settings:
+    raise ImproperlyConfigured(
+        "Set the following PostgreSQL settings in Backend/.env: "
+        + ", ".join(missing_database_settings)
+    )
+
 DATABASES = {
-    "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600)
-    if DATABASE_URL
-    else {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / "db.sqlite3"}
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": POSTGRES_DB,
+        "USER": POSTGRES_USER,
+        "PASSWORD": POSTGRES_PASSWORD,
+        "HOST": POSTGRES_HOST,
+        "PORT": POSTGRES_PORT,
+        "CONN_MAX_AGE": int(os.getenv("POSTGRES_CONN_MAX_AGE", "0")),
+        "DISABLE_SERVER_SIDE_CURSORS": True,
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -70,15 +111,42 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Dhaka"
 USE_I18N = True
 USE_TZ = True
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {
+        "BACKEND": (
+            "whitenoise.storage.CompressedManifestStaticFilesStorage"
+            if not DEBUG
+            else "django.contrib.staticfiles.storage.StaticFilesStorage"
+        )
+    },
+}
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:1408").rstrip("/")
 CORS_ALLOWED_ORIGINS = [origin.strip() for origin in os.getenv("CORS_ALLOWED_ORIGINS", FRONTEND_URL).split(",") if origin.strip()]
-CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
+vercel_origins = [
+    f"https://{os.environ[host_var].strip().removeprefix('https://').removeprefix('http://').split('/', 1)[0]}"
+    for host_var in ("VERCEL_URL", "VERCEL_PROJECT_PRODUCTION_URL")
+    if os.getenv(host_var, "").strip()
+]
+CSRF_TRUSTED_ORIGINS = list(dict.fromkeys([
+    origin.strip()
+    for origin in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origin.strip()
+] + CORS_ALLOWED_ORIGINS + vercel_origins))
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_SSL_REDIRECT = env_bool("SECURE_SSL_REDIRECT", os.getenv("VERCEL") == "1")
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
+SECURE_HSTS_PRELOAD = not DEBUG
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
