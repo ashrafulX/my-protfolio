@@ -72,6 +72,22 @@ pnpm dev
 
 The portfolio runs at [http://localhost:1408](http://localhost:1408). Set `NEXT_PUBLIC_API_URL` to the Django API root, such as `http://127.0.0.1:8000/api`, and set `APP_URL` to the public site URL for metadata, sitemap, and RSS links. The `/admin` frontend path forwards to Django Admin; `NEXT_PUBLIC_ADMIN_URL` can override its destination.
 
+### Deploy the frontend to Vercel
+
+Create a separate Vercel project with the repository's `Frontend` directory as its **Root Directory**. Next.js is detected automatically, so no custom output directory or `vercel.json` is needed. Use Node.js 22.x and the `pnpm install` / `pnpm build` commands.
+
+Set these environment variables for Production (and Preview if those deployments should use the CMS):
+
+```env
+APP_URL=https://ashraful.site
+NEXT_PUBLIC_SITE_URL=https://ashraful.site
+NEXT_PUBLIC_API_URL=https://<your-backend-domain>/api
+NEXT_PUBLIC_ADMIN_URL=https://<your-backend-domain>/admin/
+GITHUB_TOKEN=<github-token>
+```
+
+Replace `<your-backend-domain>` with the deployed Django backend's actual HTTPS domain. `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_ADMIN_URL` are embedded during the build, so redeploy after changing either value. Add `https://ashraful.site` to the backend's `CORS_ALLOWED_ORIGINS` (and configure any Vercel preview origin you use). Keep `GITHUB_TOKEN` server-only; do not prefix it with `NEXT_PUBLIC_`.
+
 For the real GitHub contribution calendar, set `GITHUB_TOKEN` on the Next.js server to a GitHub token that can read the public user's contribution calendar. GitHub profile details come from GitHub's public REST API. If the token is absent or GitHub is unavailable, the contribution graph reports that state without drawing placeholder squares.
 
 ## Content management

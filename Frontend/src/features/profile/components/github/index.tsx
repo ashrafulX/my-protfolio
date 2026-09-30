@@ -44,11 +44,7 @@ export function GitHubIntegration({ username }: { username: string }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!username) {
-      setError(true);
-      setLoading(false);
-      return;
-    }
+    if (!username) return;
 
     const controller = new AbortController();
     fetch(`/api/github?username=${encodeURIComponent(username)}`, { signal: controller.signal })
@@ -72,12 +68,12 @@ export function GitHubIntegration({ username }: { username: string }) {
         <PanelTitle>GitHub</PanelTitle>
       </PanelHeader>
 
-      {loading ? (
+      {loading && username ? (
         <div className="flex h-40 items-center justify-center" role="status">
           <LoaderIcon className="animate-spin text-muted-foreground" />
           <span className="sr-only">Loading GitHub profile and contributions</span>
         </div>
-      ) : error ? (
+      ) : error || !username ? (
         <div className="p-4 text-sm text-muted-foreground" role="status">
           The real GitHub profile or contribution calendar is unavailable. Check the portfolio profile API and server&apos;s <code>GITHUB_TOKEN</code> configuration.
         </div>

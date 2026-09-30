@@ -2,9 +2,16 @@ import { cache } from "react";
 
 import type { Post, PostMetadata } from "@/features/blog/types/post";
 
-const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api").replace(/\/$/, "");
+const API_URL = (
+  process.env.NEXT_PUBLIC_API_URL ||
+  (process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000/api" : "")
+).replace(/\/+$/, "");
 
 const getCmsResponse = cache(async (path: string): Promise<unknown | null> => {
+  if (!API_URL) {
+    return null;
+  }
+
   try {
     const response = await fetch(`${API_URL}/${path.replace(/^\//, "")}`, {
       cache: "no-store",

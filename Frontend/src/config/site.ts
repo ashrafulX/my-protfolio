@@ -2,7 +2,7 @@ import type { NavItem } from "@/types/nav";
 
 export const SITE_INFO = {
   name: "Portfolio",
-  url: process.env.APP_URL || process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:1408",
+  url: process.env.APP_URL || process.env.NEXT_PUBLIC_SITE_URL || "https://ashraful.site",
   description: "Portfolio website",
 };
 
