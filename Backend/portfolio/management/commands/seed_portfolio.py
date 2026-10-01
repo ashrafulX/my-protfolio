@@ -45,7 +45,7 @@ class Command(BaseCommand):
             "timezone": "Asia/Dhaka",
             "hero_description": "Building with code. Learning one problem at a time.",
             "seo_keywords": ["md ashraful islam", "ashraful islam", "ashrafulx", "computer science student", "competitive programmer", "icpc preparation", "cse undergraduate"],
-            "profile_image_url": "/images/profile/avatar.jpg", "created_date": date(2026, 7, 17),
+            "profile_image_url": "", "created_date": date(2026, 7, 17),
         })
         AboutSection.objects.update_or_create(pk=1, defaults={
             "title": "About",

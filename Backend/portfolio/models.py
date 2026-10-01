@@ -59,6 +59,8 @@ class Project(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     short_description = models.TextField(blank=True)
     full_description = models.TextField(blank=True)
+    logo_image = models.ImageField(upload_to="projects/logos/", blank=True)
+    logo_image_url = models.URLField(blank=True)
     featured_image = models.ImageField(upload_to="projects/", blank=True)
     featured_image_url = models.URLField(blank=True)
     technologies = models.JSONField(default=list, blank=True)

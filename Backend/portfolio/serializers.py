@@ -48,17 +48,21 @@ class ProjectSerializer(serializers.ModelSerializer):
     skills = serializers.JSONField(source="technologies")
     description = serializers.CharField(source="full_description")
     image = serializers.SerializerMethodField()
+    logo = serializers.SerializerMethodField()
     isExpanded = serializers.BooleanField(source="is_featured")
 
     class Meta:
         model = Project
-        fields = ["id", "title", "liveLink", "githubLink", "skills", "description", "image", "isExpanded"]
+        fields = ["id", "title", "liveLink", "githubLink", "skills", "description", "image", "logo", "isExpanded"]
 
     def get_title(self, obj):
         return obj.title + (f" — {obj.short_description}" if obj.short_description else "")
 
     def get_image(self, obj):
         return media_or_url(self.context.get("request"), obj.featured_image, obj.featured_image_url)
+
+    def get_logo(self, obj):
+        return media_or_url(self.context.get("request"), obj.logo_image, obj.logo_image_url)
 
 
 class ExperienceSerializer(serializers.ModelSerializer):

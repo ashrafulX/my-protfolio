@@ -8,6 +8,8 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
+CLOUDINARY_URL = os.getenv("CLOUDINARY_URL", "")
+
 
 def env_bool(name, default=False):
     value = os.getenv(name)
@@ -32,6 +34,10 @@ INSTALLED_APPS = [
     "rest_framework",
     "portfolio",
 ]
+
+if CLOUDINARY_URL:
+    INSTALLED_APPS.insert(INSTALLED_APPS.index("django.contrib.staticfiles"), "cloudinary_storage")
+    INSTALLED_APPS.append("cloudinary")
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -109,7 +115,11 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STORAGES = {
-    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"
+        if CLOUDINARY_URL
+        else "django.core.files.storage.FileSystemStorage"
+    },
     "staticfiles": {
         "BACKEND": (
             "whitenoise.storage.CompressedManifestStaticFilesStorage"

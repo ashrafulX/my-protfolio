@@ -26,6 +26,7 @@ class ProjectAdmin(admin.ModelAdmin):
     search_fields = ("title", "short_description", "full_description")
     prepopulated_fields = {"slug": ("title",)}
     ordering = ("order", "title")
+    fieldsets = (("Project", {"fields": ("title", "slug", "short_description", "full_description", "logo_image", "logo_image_url", "featured_image", "featured_image_url")}), ("Links and technologies", {"fields": ("github_url", "live_url", "technologies")}), ("Display", {"fields": ("order", "is_featured", "is_published")}))
 
 
 @admin.register(Experience)
