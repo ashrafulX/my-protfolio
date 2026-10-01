@@ -8,7 +8,7 @@ def media_or_url(request, field, fallback=""):
         value = field.url if field and field.name else ""
     except ValueError:
         value = ""
-    if value and request:
+    if value and request and not value.startswith(("http://", "https://")):
         return request.build_absolute_uri(value)
     return value or fallback
 

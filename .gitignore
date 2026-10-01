@@ -29,6 +29,9 @@ Backend/public/static/
 # misc
 .DS_Store
 *.pem
+__pycache__/
+*.py[cod]
+*$py.class
 
 # debug
 npm-debug.log*

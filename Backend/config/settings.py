@@ -14,16 +14,12 @@ def env_bool(name, default=False):
     return default if value is None else value.lower() in {"1", "true", "yes", "on"}
 
 
-CLOUDINARY_URL = os.getenv("CLOUDINARY_URL", "").strip()
-USE_CLOUDINARY_MEDIA = env_bool("USE_CLOUDINARY_MEDIA", False)
-USE_CLOUDINARY_STATIC = env_bool("USE_CLOUDINARY_STATIC", False)
-
 DEBUG = env_bool("DEBUG", False)
 SECRET_KEY = os.getenv("SECRET_KEY") or (secrets.token_urlsafe(48) if DEBUG else None)
 if not SECRET_KEY:
     raise ImproperlyConfigured("Set SECRET_KEY in the Backend environment before starting Django.")
 
-ALLOWED_HOSTS = ['.vercel.app','127.0.0.1']
+ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", ".vercel.app,127.0.0.1,localhost").split(",") if host.strip()]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -37,6 +33,10 @@ INSTALLED_APPS = [
     "portfolio",
 ]
 
+CLOUDINARY_URL = os.getenv("CLOUDINARY_URL", "").strip()
+USE_CLOUDINARY_MEDIA = env_bool("USE_CLOUDINARY_MEDIA", bool(CLOUDINARY_URL))
+USE_CLOUDINARY_STATIC = env_bool("USE_CLOUDINARY_STATIC", False)
+
 CLOUDINARY_ENABLED = (
     bool(CLOUDINARY_URL)
     and CLOUDINARY_URL.lower().startswith("cloudinary://")
@@ -44,8 +44,13 @@ CLOUDINARY_ENABLED = (
 )
 
 if CLOUDINARY_ENABLED:
+    CLOUDINARY_STORAGE = {
+        "CLOUDINARY_URL": CLOUDINARY_URL,
+    }
     INSTALLED_APPS.insert(INSTALLED_APPS.index("django.contrib.staticfiles"), "cloudinary_storage")
     INSTALLED_APPS.append("cloudinary")
+
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
