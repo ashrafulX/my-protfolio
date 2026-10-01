@@ -24,6 +24,7 @@ build
 Backend/db.sqlite3
 Backend/media/
 Backend/staticfiles/
+Backend/public/static/
 
 # misc
 .DS_Store
