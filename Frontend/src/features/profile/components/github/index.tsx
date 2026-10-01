@@ -1,9 +1,9 @@
 "use client";
 
-import { ExternalLinkIcon, LoaderIcon } from "lucide-react";
+import { LoaderIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { Panel, PanelHeader, PanelTitle } from "../panel";
+import { Panel } from "../panel";
 
 type ContributionDay = {
   date: string;
@@ -64,76 +64,25 @@ export function GitHubIntegration({ username }: { username: string }) {
 
   return (
     <Panel>
-      <PanelHeader>
-        <PanelTitle>GitHub</PanelTitle>
-      </PanelHeader>
-
       {loading && username ? (
-        <div className="flex h-40 items-center justify-center" role="status">
+        <div className="flex h-32 items-center justify-center" role="status">
           <LoaderIcon className="animate-spin text-muted-foreground" />
-          <span className="sr-only">Loading GitHub profile and contributions</span>
+          <span className="sr-only">Loading GitHub contributions</span>
         </div>
       ) : error || !username ? (
         <div className="p-4 text-sm text-muted-foreground" role="status">
-          The real GitHub profile or contribution calendar is unavailable. Check the portfolio profile API and server&apos;s <code>GITHUB_TOKEN</code> configuration.
+          GitHub contributions are currently unavailable.
         </div>
       ) : data ? (
-        <div>
-          <div className="flex items-center gap-3 border-b border-edge p-4">
-            <img
-              className="size-12 rounded-full border border-edge"
-              src={data.profile.avatarUrl}
-              alt={`${data.profile.login} avatar`}
-              width={48}
-              height={48}
-            />
-            <div className="min-w-0 flex-1">
-              <a
-                className="font-medium hover:underline"
-                href={data.profile.url}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {data.profile.name || data.profile.login}
-              </a>
-              <p className="text-sm text-muted-foreground">
-                @{data.profile.login}
-              </p>
-            </div>
-            <a
-              className="inline-flex shrink-0 items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
-              href={data.profile.url}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Profile <ExternalLinkIcon className="size-3.5" />
-            </a>
-          </div>
-
-          {(data.profile.bio || data.profile.location || data.profile.websiteUrl) && (
-            <div className="space-y-1 border-b border-edge px-4 py-3 text-sm">
-              {data.profile.bio && <p>{data.profile.bio}</p>}
-              {data.profile.location && (
-                <p className="text-muted-foreground">{data.profile.location}</p>
-              )}
-              {data.profile.websiteUrl && (
-                <a
-                  className="text-muted-foreground hover:text-foreground hover:underline"
-                  href={data.profile.websiteUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {data.profile.websiteUrl}
-                </a>
-              )}
-            </div>
-          )}
-
+        <div className="p-4">
           {data.calendar ? (
-            <ContributionCalendar calendar={data.calendar} username={data.profile.login} />
+            <ContributionCalendar
+              calendar={data.calendar}
+              profileUrl={data.profile.url}
+            />
           ) : (
-            <p className="border-t border-edge p-4 text-sm text-muted-foreground" role="status">
-              The real contribution calendar is unavailable. {data.calendarError}
+            <p className="text-sm text-muted-foreground" role="status">
+              GitHub contributions are currently unavailable.
             </p>
           )}
         </div>
@@ -144,76 +93,77 @@ export function GitHubIntegration({ username }: { username: string }) {
 
 function ContributionCalendar({
   calendar,
-  username,
+  profileUrl,
 }: {
   calendar: NonNullable<GitHubData["calendar"]>;
-  username: string;
+  profileUrl: string;
 }) {
-  const columns = `repeat(${calendar.weeks.length}, 11px)`;
+  const columns = `repeat(${calendar.weeks.length}, minmax(0, 1fr))`;
+  const legendColors = ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"];
 
   return (
-    <div className="p-4">
-      <p className="mb-3 text-sm text-muted-foreground">
-        {calendar.totalContributions.toLocaleString()} contributions in the last
-        year on GitHub
-      </p>
-
-      <div className="overflow-x-auto pb-2">
-        <div className="w-max">
-          <div
-            className="mb-2 grid gap-x-[3px] text-xs text-muted-foreground"
-            style={{ gridTemplateColumns: columns }}
-            aria-hidden="true"
-          >
-            {calendar.months.map((month) => {
-              const weekIndex = calendar.weeks.findIndex((week) =>
-                week.contributionDays.some((day) => day.date === month.firstDay)
-              );
-              return (
-                <span
-                  key={`${month.name}-${month.firstDay}`}
-                  className="whitespace-nowrap"
-                  style={{ gridColumn: `${weekIndex + 1} / span ${month.totalWeeks}` }}
-                >
-                  {month.name}
-                </span>
-              );
-            })}
-          </div>
-
-          <div className="flex gap-2">
-            <div className="grid grid-rows-7 gap-[3px] pt-px text-[9px] leading-[11px] text-muted-foreground" aria-hidden="true">
-              <span />
-              <span>Mon</span>
-              <span />
-              <span>Wed</span>
-              <span />
-              <span>Fri</span>
-              <span />
-            </div>
-
-            <div
-              className="grid grid-flow-col grid-rows-7 gap-[3px]"
-              style={{ gridTemplateColumns: columns }}
-              aria-label="GitHub contribution calendar for the last year"
+    <div>
+      <div
+        className="mb-2 grid gap-x-1 text-xs text-muted-foreground sm:text-sm"
+        style={{ gridTemplateColumns: columns }}
+        aria-hidden="true"
+      >
+        {calendar.months.map((month) => {
+          const weekIndex = calendar.weeks.findIndex((week) =>
+            week.contributionDays.some((day) => day.date === month.firstDay)
+          );
+          return (
+            <span
+              key={`${month.name}-${month.firstDay}`}
+              className="whitespace-nowrap"
+              style={{ gridColumn: `${weekIndex + 1} / span ${month.totalWeeks}` }}
             >
-              {calendar.weeks.flatMap((week) => week.contributionDays).map((day) => (
-                <span
-                  key={day.date}
-                  className="size-[11px] rounded-[2px] ring-1 ring-black/5 ring-inset dark:ring-white/10"
-                  style={{ backgroundColor: day.color, gridRow: day.weekday + 1 }}
-                  title={`${day.date}: ${day.contributionCount} contribution${day.contributionCount === 1 ? "" : "s"}`}
-                  aria-label={`${day.date}: ${day.contributionCount} contribution${day.contributionCount === 1 ? "" : "s"}`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+              {month.name}
+            </span>
+          );
+        })}
       </div>
 
-      <p className="mt-2 text-xs text-muted-foreground">
-        Contribution days and colors are provided by GitHub for @{username}.
-      </p>
+      <div
+        className="grid grid-flow-col grid-rows-7 gap-1"
+        style={{ gridTemplateColumns: columns }}
+        aria-label="GitHub contribution calendar for the last year"
+      >
+        {calendar.weeks.flatMap((week) => week.contributionDays).map((day) => (
+          <span
+            key={day.date}
+            className="aspect-square min-w-0 rounded-[1px]"
+            style={{ backgroundColor: day.color, gridRow: day.weekday + 1 }}
+            title={`${day.date}: ${day.contributionCount} contribution${day.contributionCount === 1 ? "" : "s"}`}
+            aria-label={`${day.date}: ${day.contributionCount} contribution${day.contributionCount === 1 ? "" : "s"}`}
+          />
+        ))}
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm text-muted-foreground sm:text-base">
+        <p>
+          {calendar.totalContributions.toLocaleString()} contributions in the last year on{" "}
+          <a
+            className="underline underline-offset-4 hover:text-foreground"
+            href={profileUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub
+          </a>
+        </p>
+        <div className="flex items-center gap-1.5" aria-label="Contribution activity: less to more">
+          <span>Less</span>
+          {legendColors.map((color) => (
+            <span
+              key={color}
+              className="size-3 rounded-[1px] sm:size-3.5"
+              style={{ backgroundColor: color }}
+            />
+          ))}
+          <span>More</span>
+        </div>
+      </div>
     </div>
   );
 }
