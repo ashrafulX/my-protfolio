@@ -8,13 +8,15 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
-CLOUDINARY_URL = os.getenv("CLOUDINARY_URL", "")
-
 
 def env_bool(name, default=False):
     value = os.getenv(name)
     return default if value is None else value.lower() in {"1", "true", "yes", "on"}
 
+
+CLOUDINARY_URL = os.getenv("CLOUDINARY_URL", "").strip()
+USE_CLOUDINARY_MEDIA = env_bool("USE_CLOUDINARY_MEDIA", False)
+USE_CLOUDINARY_STATIC = env_bool("USE_CLOUDINARY_STATIC", False)
 
 DEBUG = env_bool("DEBUG", False)
 SECRET_KEY = os.getenv("SECRET_KEY") or (secrets.token_urlsafe(48) if DEBUG else None)
@@ -35,7 +37,13 @@ INSTALLED_APPS = [
     "portfolio",
 ]
 
-if CLOUDINARY_URL:
+CLOUDINARY_ENABLED = (
+    bool(CLOUDINARY_URL)
+    and CLOUDINARY_URL.lower().startswith("cloudinary://")
+    and (USE_CLOUDINARY_MEDIA or USE_CLOUDINARY_STATIC)
+)
+
+if CLOUDINARY_ENABLED:
     INSTALLED_APPS.insert(INSTALLED_APPS.index("django.contrib.staticfiles"), "cloudinary_storage")
     INSTALLED_APPS.append("cloudinary")
 
@@ -116,12 +124,12 @@ STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 DEFAULT_FILE_STORAGE = (
     "cloudinary_storage.storage.MediaCloudinaryStorage"
-    if CLOUDINARY_URL
+    if CLOUDINARY_ENABLED and USE_CLOUDINARY_MEDIA
     else "django.core.files.storage.FileSystemStorage"
 )
 STATICFILES_STORAGE = (
     "cloudinary_storage.storage.StaticCloudinaryStorage"
-    if CLOUDINARY_URL and not DEBUG
+    if CLOUDINARY_ENABLED and USE_CLOUDINARY_STATIC and not DEBUG
     else "whitenoise.storage.CompressedStaticFilesStorage"
     if not DEBUG
     else "django.contrib.staticfiles.storage.StaticFilesStorage"
