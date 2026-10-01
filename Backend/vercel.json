@@ -1,24 +1,14 @@
 {
     "buildCommand": "python manage.py collectstatic --noinput",
-    "builds": [
-        {
-            "src": "public/static/**",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "config/wsgi.py",
-            "use": "@vercel/python",
-            "config": {
-                "runtime": "python3.12",
-                "includeFiles": ["public/static/**"]
-            }
-        }
-    ],
+    "builds": [{
+      "src": "config/wsgi.py",
+      "use": "@vercel/python",
+      "config": {
+        "runtime": "python3.12",
+        "includeFiles": ["staticfiles/**"]
+      }
+    }],
     "routes": [
-        {
-            "src": "/static/(.*)",
-            "dest": "/public/static/$1"
-        },
       {
         "src": "/(.*)",
         "dest": "config/wsgi.py"
