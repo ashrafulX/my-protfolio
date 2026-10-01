@@ -2,25 +2,14 @@ import { cmsGet, type CmsProfile } from "@/lib/cms-api";
 import { cn } from "@/lib/utils";
 import { FlipSentences } from "@/registry/flip-sentences";
 
+import { ProfileAvatar } from "./profile-avatar";
 
 export async function ProfileHeader() {
   const profile = await cmsGet<CmsProfile>("profile/");
   if (!profile) return <div className="border-x border-edge px-4 py-8 text-sm text-muted-foreground">Profile unavailable.</div>;
   return (
     <div className="screen-line-after flex border-x border-edge">
-      {profile.avatar && (
-        <div className="shrink-0 border-r border-edge">
-          <div className="mx-[0.5px] my-[3px] size-32 overflow-hidden rounded-full ring-1 ring-border ring-offset-2 ring-offset-background sm:size-40">
-            <img
-              className="size-32 scale-110 rounded-full object-cover object-center select-none sm:size-40"
-              alt={`${profile.displayName}'s avatar`}
-              src={profile.avatar}
-              fetchPriority="high"
-              onError={(event) => event.currentTarget.parentElement?.parentElement?.classList.add("hidden")}
-            />
-          </div>
-        </div>
-      )}
+      {profile.avatar && <ProfileAvatar avatar={profile.avatar} displayName={profile.displayName} />}
 
       <div className="flex flex-1 flex-col">
         <div
