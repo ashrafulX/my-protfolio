@@ -114,19 +114,21 @@ USE_I18N = True
 USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+DEFAULT_FILE_STORAGE = (
+    "cloudinary_storage.storage.MediaCloudinaryStorage"
+    if CLOUDINARY_URL
+    else "django.core.files.storage.FileSystemStorage"
+)
+STATICFILES_STORAGE = (
+    "cloudinary_storage.storage.StaticCloudinaryStorage"
+    if CLOUDINARY_URL and not DEBUG
+    else "whitenoise.storage.CompressedStaticFilesStorage"
+    if not DEBUG
+    else "django.contrib.staticfiles.storage.StaticFilesStorage"
+)
 STORAGES = {
-    "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"
-        if CLOUDINARY_URL
-        else "django.core.files.storage.FileSystemStorage"
-    },
-    "staticfiles": {
-        "BACKEND": (
-            "whitenoise.storage.CompressedManifestStaticFilesStorage"
-            if not DEBUG
-            else "django.contrib.staticfiles.storage.StaticFilesStorage"
-        )
-    },
+    "default": {"BACKEND": DEFAULT_FILE_STORAGE},
+    "staticfiles": {"BACKEND": STATICFILES_STORAGE},
 }
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
