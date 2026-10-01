@@ -57,10 +57,10 @@ export default async function Page() {
         <Blog />
         <Separator />
 
-        <Projects />
+        <Experiences />
         <Separator />
 
-        <Experiences />
+        <Projects />
         <Separator />
 
         <Awards />

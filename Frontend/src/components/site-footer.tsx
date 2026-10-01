@@ -1,41 +1,13 @@
 import { RssIcon } from "lucide-react";
 
 import { SITE_INFO } from "@/config/site";
-import { cmsGet, type CmsProfile } from "@/lib/cms-api";
 
 import { Icons } from "./icons";
 
-export async function SiteFooter() {
-  const profile = await cmsGet<CmsProfile>("profile/");
+export function SiteFooter() {
   return (
     <footer className="max-w-screen overflow-x-hidden px-2">
       <div className="screen-line-before mx-auto border-x border-edge pt-4 md:max-w-3xl">
-        <p className="mb-1 px-4 text-center font-mono text-sm text-balance text-muted-foreground">
-          Inspired by tailwindcss.com & ui.shadcn.com
-        </p>
-
-        <p className="mb-4 px-4 text-center font-mono text-sm text-balance text-muted-foreground">
-          Built by a {""}
-          {/* <a
-            className="link"
-            href="https://www.linkedin.com/in/abdulrehmanwaseem"
-            target="_blank"
-            rel="noopener"
-          >
-            abdul rehman
-          </a> */}
-          human. Find me on{" "}
-          <a
-            className="link"
-            href={profile?.username ? `https://github.com/${profile.username}` : undefined}
-            target="_blank"
-            rel="noopener"
-          >
-            GitHub
-          </a>
-          .
-        </p>
-
         <div className="screen-line-before screen-line-after flex w-full before:z-1 after:z-1">
           <div className="mx-auto flex items-center justify-center gap-3 border-x border-edge bg-background px-4">
             <a
