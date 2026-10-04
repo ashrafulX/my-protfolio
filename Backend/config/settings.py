@@ -19,7 +19,7 @@ SECRET_KEY = os.getenv("SECRET_KEY") or (secrets.token_urlsafe(48) if DEBUG else
 if not SECRET_KEY:
     raise ImproperlyConfigured("Set SECRET_KEY in the Backend environment before starting Django.")
 
-ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", ".vercel.app,127.0.0.1,localhost").split(",") if host.strip()]
+ALLOWED_HOSTS = ['.vercel.app','127.0.0.1']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
