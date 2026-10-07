@@ -7,15 +7,18 @@ const API_URL = (
   (process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000/api" : "")
 ).replace(/\/+$/, "");
 
+export const REVALIDATE_SECONDS = 60;
+
 const getCmsResponse = cache(async (path: string): Promise<unknown | null> => {
   if (!API_URL) {
     return null;
   }
 
   try {
-    const response = await fetch(`${API_URL}/${path.replace(/^\//, "")}`, {
-      cache: "no-store",
-      signal: AbortSignal.timeout(5000),
+    const cleanPath = path.replace(/^\//, "");
+    const response = await fetch(`${API_URL}/${cleanPath}`, {
+      next: { revalidate: REVALIDATE_SECONDS },
+      signal: AbortSignal.timeout(8000),
     });
     if (!response.ok) return null;
     return await response.json();
@@ -51,7 +54,26 @@ export type ApiList<T> = { results: T[]; count: number; next: string | null; pre
 
 export async function cmsList<T>(path: string): Promise<T[] | null> {
   const response = await cmsGet<T[] | ApiList<T>>(path);
-  return response === null ? null : Array.isArray(response) ? response : response.results;
+  if (response === null) return null;
+  return Array.isArray(response) ? response : response.results;
+}
+
+export type PortfolioBundle = {
+  profile: CmsProfile | null;
+  about: { content: string; title?: string } | null;
+  resume: { title: string; url: string } | null;
+  skills: unknown[];
+  social_links: unknown[];
+  experience: unknown[];
+  education: unknown[];
+  projects: unknown[];
+  achievements: unknown[];
+  certifications: unknown[];
+  research: unknown[];
+};
+
+export async function getPortfolioBundle(): Promise<PortfolioBundle | null> {
+  return cmsGet<PortfolioBundle>("all/");
 }
 
 type ApiPost = {
@@ -90,8 +112,10 @@ export function toPost(post: ApiPost): Post {
 }
 
 export async function getCmsPosts(page = 1, pageSize = 10): Promise<Post[] | null> {
-  const response = await cmsGet<ApiList<ApiPost>>(`blog/posts/?page=${page}&page_size=${pageSize}`);
-  return response?.results.map(toPost) ?? null;
+  const response = await cmsGet<ApiList<ApiPost> | ApiPost[]>(`blog/posts/?page=${page}&page_size=${pageSize}`);
+  if (!response) return null;
+  const list = Array.isArray(response) ? response : response.results;
+  return list.map(toPost);
 }
 
 export async function getCmsPost(slug: string): Promise<Post | null> {

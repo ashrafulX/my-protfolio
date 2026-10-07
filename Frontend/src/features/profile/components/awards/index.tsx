@@ -1,16 +1,16 @@
 import dayjs from "dayjs";
 
 import { CollapsibleList } from "@/components/collapsible-list";
-import { type ApiList,cmsGet } from "@/lib/cms-api";
+import { cmsList } from "@/lib/cms-api";
 
 import type { Award } from "../../types/awards";
 import { Panel, PanelHeader, PanelTitle } from "../panel";
 import { AwardItem } from "./award-item";
 
 export async function Awards() {
-  const response = await cmsGet<Award[] | ApiList<Award>>("achievements/");
-  const data = Array.isArray(response) ? response : response?.results ?? null;
+  const data = await cmsList<Award>("achievements/");
   const sortedAwards = data ? [...data].sort((a, b) => dayjs(b.date).diff(dayjs(a.date))) : null;
+
   return (
     <Panel id="awards">
       <PanelHeader>
@@ -22,12 +22,18 @@ export async function Awards() {
         </PanelTitle>
       </PanelHeader>
 
-      {sortedAwards === null ? <p className="px-4 py-6 text-sm text-muted-foreground">Achievements unavailable.</p> : sortedAwards.length === 0 ? <p className="px-4 py-6 text-sm text-muted-foreground">No achievements yet.</p> : <CollapsibleList
-        items={sortedAwards}
-        max={8}
-        keyExtractor={(item) => item.id}
-        renderItem={(item) => <AwardItem award={item} />}
-      />}
+      {sortedAwards === null ? (
+        <p className="px-4 py-6 text-sm text-muted-foreground">Achievements unavailable.</p>
+      ) : sortedAwards.length === 0 ? (
+        <p className="px-4 py-6 text-sm text-muted-foreground">No achievements yet.</p>
+      ) : (
+        <CollapsibleList
+          items={sortedAwards}
+          max={8}
+          keyExtractor={(item) => item.id}
+          renderItem={(item) => <AwardItem award={item} />}
+        />
+      )}
     </Panel>
   );
 }

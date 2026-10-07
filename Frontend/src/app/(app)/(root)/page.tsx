@@ -18,7 +18,7 @@ import { TeckStack } from "@/features/profile/components/teck-stack";
 import { cmsGet, type CmsProfile } from "@/lib/cms-api";
 import { cn } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function Page() {
   const profile = await cmsGet<CmsProfile>("profile/");

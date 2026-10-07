@@ -6,7 +6,7 @@ import { NavItemGitHub } from "@/components/nav-item-github";
 import { MAIN_NAV } from "@/config/site";
 import { getAllPosts } from "@/features/blog/data/posts";
 import type { SocialLink } from "@/features/profile/types/social-links";
-import { type ApiList, cmsGet, type CmsProfile } from "@/lib/cms-api";
+import { cmsGet, cmsList, type CmsProfile } from "@/lib/cms-api";
 import { cn } from "@/lib/utils";
 
 import { SiteHeaderMark } from "./site-header-mark";
@@ -26,12 +26,12 @@ const MobileNav = dynamic(() =>
 );
 
 export async function SiteHeader() {
-  const [posts, socialResponse, profile] = await Promise.all([
+  const [posts, socialLinks, profile] = await Promise.all([
     getAllPosts(),
-    cmsGet<SocialLink[] | ApiList<SocialLink>>("social-links/"),
+    cmsList<SocialLink>("social-links/"),
     cmsGet<CmsProfile>("profile/"),
   ]);
-  const socialLinks = Array.isArray(socialResponse) ? socialResponse : socialResponse?.results ?? [];
+
 
   return (
     <SiteHeaderWrapper
@@ -61,8 +61,9 @@ export async function SiteHeader() {
         <DesktopNav items={MAIN_NAV} />
 
         <div className="flex items-center *:first:mr-2">
-          <CommandMenu posts={posts ?? []} socialLinks={socialLinks} />
+          <CommandMenu posts={posts ?? []} socialLinks={socialLinks ?? []} />
           {profile?.username && <NavItemGitHub profileUrl={`https://github.com/${profile.username}`} />}
+
 
           <span className="mx-2 flex h-4 w-px bg-border" />
 

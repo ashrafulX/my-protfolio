@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 import { SITE_INFO } from "@/config/site";
 import { cmsGet, type CmsProfile } from "@/lib/cms-api";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
   const profile = await cmsGet<CmsProfile>("profile/");

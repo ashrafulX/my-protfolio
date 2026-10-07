@@ -2,15 +2,15 @@ import Image from "next/image";
 import React from "react";
 
 import { SimpleTooltip } from "@/components/ui/tooltip";
-import { type ApiList,cmsGet } from "@/lib/cms-api";
+import { cmsList } from "@/lib/cms-api";
 import { cn } from "@/lib/utils";
 
 import type { TechStack } from "../types/tech-stack";
 import { Panel, PanelContent, PanelHeader, PanelTitle } from "./panel";
 
 export async function TeckStack() {
-  const response = await cmsGet<TechStack[] | ApiList<TechStack>>("skills/");
-  const skills = Array.isArray(response) ? response : response?.results ?? null;
+  const skills = await cmsList<TechStack>("skills/");
+
   return (
     <Panel id="stack">
       <PanelHeader>
@@ -25,34 +25,32 @@ export async function TeckStack() {
         )}
       >
         <ul className="flex flex-wrap gap-4 select-none">
-          {skills?.map((tech) => {
-            return (
-              <li key={tech.key} className="flex">
-                <SimpleTooltip content={tech.title}>
-                  <a
-                    href={tech.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={tech.title}
-                    className="transition-transform hover:scale-110"
-                  >
-                    <Image
-                      src={tech.iconUrl}
-                      alt={`${tech.title} icon`}
-                      width={32}
-                      height={32}
-                      unoptimized
-                      className={cn(
-                        "h-8 w-8 object-contain",
-                        tech.theme && "dark:invert"
-                      )}
-                    />
-                    <span className="sr-only">{tech.title}</span>
-                  </a>
-                </SimpleTooltip>
-              </li>
-            );
-          })}
+          {skills?.map((tech) => (
+            <li key={tech.key} className="flex">
+              <SimpleTooltip content={tech.title}>
+                <a
+                  href={tech.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={tech.title}
+                  className="transition-transform hover:scale-110"
+                >
+                  <Image
+                    src={tech.iconUrl}
+                    alt={`${tech.title} icon`}
+                    width={32}
+                    height={32}
+                    unoptimized
+                    className={cn(
+                      "h-8 w-8 object-contain",
+                      tech.theme && "dark:invert"
+                    )}
+                  />
+                  <span className="sr-only">{tech.title}</span>
+                </a>
+              </SimpleTooltip>
+            </li>
+          ))}
         </ul>
         {skills === null && <p className="text-sm text-muted-foreground">Stack information unavailable.</p>}
         {skills?.length === 0 && <p className="text-sm text-muted-foreground">No skills found.</p>}

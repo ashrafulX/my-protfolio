@@ -1,13 +1,13 @@
 import { MicroscopeIcon } from "lucide-react";
 
-import { type ApiList,cmsGet } from "@/lib/cms-api";
+import { cmsList } from "@/lib/cms-api";
 
 import type { Research as ResearchEntry } from "../types/research";
 import { Panel, PanelHeader, PanelTitle } from "./panel";
 
 export async function Research() {
-  const response = await cmsGet<ResearchEntry[] | ApiList<ResearchEntry>>("research/");
-  const research = Array.isArray(response) ? response : response?.results ?? null;
+  const research = await cmsList<ResearchEntry>("research/");
+
   return (
     <Panel id="research">
       <PanelHeader>
@@ -47,8 +47,12 @@ export async function Research() {
             </div>
           </div>
         ))}
-        {research === null && <p className="px-4 py-6 text-sm text-muted-foreground">Research information unavailable.</p>}
-        {research?.length === 0 && <p className="px-4 py-6 text-sm text-muted-foreground">No research entries.</p>}
+        {research === null && (
+          <p className="px-4 py-6 text-sm text-muted-foreground">Research information unavailable.</p>
+        )}
+        {research?.length === 0 && (
+          <p className="px-4 py-6 text-sm text-muted-foreground">No research entries.</p>
+        )}
       </div>
     </Panel>
   );

@@ -1,8 +1,8 @@
 import "@/styles/globals.css";
 
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import type { WebSite, WithContext } from "schema-dts";
+
 
 import { Providers } from "@/components/providers";
 import { META_THEME_COLORS, SITE_INFO } from "@/config/site";
@@ -84,12 +84,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en" className={`${fontSans.variable} ${fontMono.variable}`} suppressHydrationWarning>
       <head>
         <script type="text/javascript" dangerouslySetInnerHTML={{ __html: darkModeScript }} />
-        <Script src={`data:text/javascript;base64,${btoa(darkModeScript)}`} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(getWebSiteJsonLd(profile)).replace(/</g, "\\u003c") }}
         />
       </head>
+
       <body suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>

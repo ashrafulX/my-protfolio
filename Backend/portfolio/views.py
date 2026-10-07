@@ -44,6 +44,34 @@ class ResumeView(FirstRecordView):
         return Response(self.serializer_class(instance, context={"request": request}).data)
 
 
+class PortfolioBundleView(APIView):
+    def get(self, request):
+        ctx = {"request": request}
+        profile = Profile.objects.first()
+        about = AboutSection.objects.filter(is_active=True).first()
+        resume = Resume.objects.filter(is_current=True).first()
+
+        profile_github_username = Profile.objects.order_by("pk").values("github_username")[:1]
+        social_links = SocialLink.objects.filter(is_visible=True).annotate(
+            profile_github_username=Subquery(profile_github_username)
+        )
+
+        return Response({
+            "profile": ProfileSerializer(profile, context=ctx).data if profile else None,
+            "about": AboutSerializer(about, context=ctx).data if about else None,
+            "resume": ResumeSerializer(resume, context=ctx).data if resume else None,
+            "skills": SkillSerializer(Skill.objects.filter(is_visible=True), many=True, context=ctx).data,
+            "social_links": SocialLinkSerializer(social_links, many=True, context=ctx).data,
+            "experience": ExperienceSerializer(Experience.objects.filter(is_visible=True), many=True, context=ctx).data,
+            "education": EducationSerializer(Education.objects.filter(is_visible=True), many=True, context=ctx).data,
+            "projects": ProjectSerializer(Project.objects.filter(is_published=True), many=True, context=ctx).data,
+            "achievements": AchievementSerializer(Achievement.objects.filter(is_visible=True), many=True, context=ctx).data,
+            "certifications": CertificationSerializer(Certification.objects.filter(is_visible=True), many=True, context=ctx).data,
+            "research": ResearchSerializer(Research.objects.filter(is_visible=True), many=True, context=ctx).data,
+        })
+
+
+
 class ProjectListView(generics.ListAPIView):
     serializer_class = ProjectSerializer
     pagination_class = None

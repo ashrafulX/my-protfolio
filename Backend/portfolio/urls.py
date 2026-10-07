@@ -1,9 +1,16 @@
 from django.urls import path
 
-from .views import AboutView, AchievementListView, BlogPostDetailView, BlogPostListView, CategoryListView, CertificationListView, EducationListView, ExperienceListView, ProfileView, ProjectDetailView, ProjectListView, ResearchListView, ResumeView, SkillListView, SocialLinkListView, TagListView
+from .views import (
+    AboutView, AchievementListView, BlogPostDetailView, BlogPostListView,
+    CategoryListView, CertificationListView, EducationListView, ExperienceListView,
+    PortfolioBundleView, ProfileView, ProjectDetailView, ProjectListView,
+    ResearchListView, ResumeView, SkillListView, SocialLinkListView, TagListView
+)
 
 urlpatterns = [
+    path("all/", PortfolioBundleView.as_view()),
     path("profile/", ProfileView.as_view()),
+
     path("about/", AboutView.as_view()),
     path("projects/", ProjectListView.as_view()),
     path("projects/<slug:slug>/", ProjectDetailView.as_view()),

@@ -1,13 +1,13 @@
 import { CollapsibleList } from "@/components/collapsible-list";
-import { type ApiList,cmsGet } from "@/lib/cms-api";
+import { cmsList } from "@/lib/cms-api";
 
 import type { Project } from "../../types/projects";
 import { Panel, PanelHeader, PanelTitle } from "../panel";
 import { ProjectItem } from "./project-item";
 
 export async function Projects() {
-  const response = await cmsGet<Project[] | ApiList<Project>>("projects/?featured=true");
-  const projects = Array.isArray(response) ? response : response?.results ?? null;
+  const projects = await cmsList<Project>("projects/?featured=true");
+
   return (
     <Panel id="projects">
       <PanelHeader>
@@ -19,7 +19,13 @@ export async function Projects() {
         </PanelTitle>
       </PanelHeader>
 
-      {projects === null ? <p className="px-4 py-6 text-sm text-muted-foreground">Projects unavailable.</p> : projects.length ? <CollapsibleList items={projects} max={4} renderItem={(item) => <ProjectItem project={item} />} /> : <p className="px-4 py-6 text-sm text-muted-foreground">No projects found.</p>}
+      {projects === null ? (
+        <p className="px-4 py-6 text-sm text-muted-foreground">Projects unavailable.</p>
+      ) : projects.length ? (
+        <CollapsibleList items={projects} max={4} renderItem={(item) => <ProjectItem project={item} />} />
+      ) : (
+        <p className="px-4 py-6 text-sm text-muted-foreground">No projects found.</p>
+      )}
     </Panel>
   );
 }
