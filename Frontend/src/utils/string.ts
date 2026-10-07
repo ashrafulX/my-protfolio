@@ -9,5 +9,9 @@ export function decodePhoneNumber(phone: string) {
 }
 
 export function formatPhoneNumber(phone: string) {
-  return formatIncompletePhoneNumber(phone);
+  try {
+    return formatIncompletePhoneNumber(phone);
+  } catch {
+    return phone;
+  }
 }

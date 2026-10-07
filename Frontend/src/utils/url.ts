@@ -1,4 +1,5 @@
-export function urlToName(url: string) {
+export function urlToName(url?: string | null) {
+  if (!url) return "";
   return url.replace(/(^\w+:|^)\/\//, "");
 }
 

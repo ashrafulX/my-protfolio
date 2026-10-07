@@ -39,48 +39,54 @@ export async function Overview() {
             />
           )}
 
-          <IntroItem>
-            <IntroItemIcon>
-              <MarsIcon />
-            </IntroItemIcon>
-            <IntroItemContent aria-label={`Pronouns: ${profile.pronouns}`}>
-              {profile.pronouns}
-            </IntroItemContent>
-          </IntroItem>
+          {profile.pronouns && (
+            <IntroItem>
+              <IntroItemIcon>
+                <MarsIcon />
+              </IntroItemIcon>
+              <IntroItemContent aria-label={`Pronouns: ${profile.pronouns}`}>
+                {profile.pronouns}
+              </IntroItemContent>
+            </IntroItem>
+          )}
 
-          <IntroItem>
-            <IntroItemIcon>
-              <MapPinIcon />
-            </IntroItemIcon>
-            <IntroItemContent>
-              <IntroItemLink
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(profile.address)}`}
-                aria-label={`Location: ${profile.address}`}
-              >
-              {profile.address}
-              </IntroItemLink>
-            </IntroItemContent>
-          </IntroItem>
+          {profile.address && (
+            <IntroItem>
+              <IntroItemIcon>
+                <MapPinIcon />
+              </IntroItemIcon>
+              <IntroItemContent>
+                <IntroItemLink
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(profile.address)}`}
+                  aria-label={`Location: ${profile.address}`}
+                >
+                  {profile.address}
+                </IntroItemLink>
+              </IntroItemContent>
+            </IntroItem>
+          )}
 
           <CurrentLocalTimeItem timeZone={profile.timezone} />
 
-          <EmailItem email={profile.email} />
+          {profile.email && <EmailItem email={profile.email} />}
 
           {profile.phoneNumber && <PhoneItem phoneNumber={profile.phoneNumber} />}
 
-          <IntroItem>
-            <IntroItemIcon>
-              <GlobeIcon />
-            </IntroItemIcon>
-            <IntroItemContent>
-              <IntroItemLink
-                href={profile.website}
-                aria-label={`Personal website: ${urlToName(profile.website)}`}
-              >
-                {urlToName(profile.website)}
-              </IntroItemLink>
-            </IntroItemContent>
-          </IntroItem>
+          {profile.website && (
+            <IntroItem>
+              <IntroItemIcon>
+                <GlobeIcon />
+              </IntroItemIcon>
+              <IntroItemContent>
+                <IntroItemLink
+                  href={profile.website}
+                  aria-label={`Personal website: ${urlToName(profile.website)}`}
+                >
+                  {urlToName(profile.website)}
+                </IntroItemLink>
+              </IntroItemContent>
+            </IntroItem>
+          )}
         </div>
       </PanelContent>
     </Panel>

@@ -47,34 +47,40 @@ export function CurrentLocalTimeItem({ timeZone }: CurrentLocalTimeItemProps) {
 
   useEffect(() => {
     const updateTime = () => {
-      const now = new Date();
+      try {
+        const validTz = timeZone || "Asia/Dhaka";
+        const now = new Date();
 
-      // Get time in target timezone using TZDate
-      const targetTime = TZDate.tz(timeZone);
-      const formattedTime = format(targetTime, "HH:mm");
-      setTimeString(formattedTime);
+        // Get time in target timezone using TZDate
+        const targetTime = TZDate.tz(validTz);
+        const formattedTime = format(targetTime, "HH:mm");
+        setTimeString(formattedTime);
 
-      // Get hour for clock icon (1-12)
-      const hour = targetTime.getHours();
-      const hour12 = hour % 12 || 12;
-      setClockIcon(CLOCK_ICONS[hour12]);
+        // Get hour for clock icon (1-12)
+        const hour = targetTime.getHours();
+        const hour12 = hour % 12 || 12;
+        setClockIcon(CLOCK_ICONS[hour12] || Clock12Icon);
 
-      // Calculate timezone offset difference using tzOffset
-      const viewerOffset = -now.getTimezoneOffset(); // in minutes
-      const targetOffset = tzOffset(timeZone, now); // in minutes
+        // Calculate timezone offset difference using tzOffset
+        const viewerOffset = -now.getTimezoneOffset(); // in minutes
+        const targetOffset = tzOffset(validTz, now); // in minutes
 
-      const minutesDiff = Math.abs(targetOffset - viewerOffset);
-      const hoursDiff = minutesDiff / 60;
+        const minutesDiff = Math.abs(targetOffset - viewerOffset);
+        const hoursDiff = minutesDiff / 60;
 
-      let diff = "";
-      if (hoursDiff < 1) {
-        diff = " // same time";
-      } else {
-        const hours = Math.floor(hoursDiff);
-        const isAhead = targetOffset > viewerOffset;
-        diff = ` // ${hours}h ${isAhead ? "ahead" : "behind"}`;
+        let diff = "";
+        if (hoursDiff < 1) {
+          diff = " // same time";
+        } else {
+          const hours = Math.floor(hoursDiff);
+          const isAhead = targetOffset > viewerOffset;
+          diff = ` // ${hours}h ${isAhead ? "ahead" : "behind"}`;
+        }
+        setDiffText(diff);
+      } catch {
+        setTimeString("12:00");
+        setDiffText("");
       }
-      setDiffText(diff);
     };
 
     updateTime();
