@@ -67,14 +67,16 @@ export function CertificationItem({
             orientation="vertical"
           />
 
-          <dl>
-            <dt className="sr-only">Issued on</dt>
-            <dd>
-              <time dateTime={dayjs(certification.issueDate).toISOString()}>
-                {dayjs(certification.issueDate).format("DD.MM.YYYY")}
-              </time>
-            </dd>
-          </dl>
+          {certification.issueDate && (
+            <dl>
+              <dt className="sr-only">Issued on</dt>
+              <dd>
+                <time dateTime={dayjs(certification.issueDate).isValid() ? dayjs(certification.issueDate).toISOString() : ""}>
+                  {dayjs(certification.issueDate).isValid() ? dayjs(certification.issueDate).format("DD.MM.YYYY") : certification.issueDate}
+                </time>
+              </dd>
+            </dl>
+          )}
         </div>
       </div>
 

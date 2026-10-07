@@ -13,7 +13,9 @@ export async function Experiences() {
   ]);
 
   const entries =
-    experiences === null || education === null ? null : [...experiences, ...education];
+    experiences === null && education === null
+      ? null
+      : [...(experiences ?? []), ...(education ?? [])];
 
   return (
     <Panel id="experience">

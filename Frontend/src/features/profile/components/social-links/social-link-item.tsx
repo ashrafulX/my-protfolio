@@ -23,15 +23,19 @@ export function SocialLinkItem({
       rel="noopener"
     >
       <div className="relative size-12 shrink-0">
-        <Image
-          className={`rounded-xl object-contain ${padding && "p-[7px]"}`}
-          src={icon}
-          alt={title}
-          width={48}
-          height={48}
-          quality={100}
-          unoptimized
-        />
+        {icon ? (
+          <Image
+            className={`rounded-xl object-contain ${padding && "p-[7px]"}`}
+            src={icon}
+            alt={title}
+            width={48}
+            height={48}
+            quality={100}
+            unoptimized
+          />
+        ) : (
+          <div className="size-12 rounded-xl bg-muted" />
+        )}
         <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-black/10 ring-inset dark:ring-white/10" />
       </div>
 

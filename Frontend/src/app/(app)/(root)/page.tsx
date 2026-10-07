@@ -15,7 +15,8 @@ import { Research } from "@/features/profile/components/research";
 import { Resume } from "@/features/profile/components/resume";
 import { SocialLinks } from "@/features/profile/components/social-links";
 import { TeckStack } from "@/features/profile/components/teck-stack";
-import { cmsGet, type CmsProfile } from "@/lib/cms-api";
+import type { CmsProfile } from "@/lib/cms-api";
+import { cmsGet } from "@/lib/cms-api";
 import { cn } from "@/lib/utils";
 
 export const revalidate = 60;

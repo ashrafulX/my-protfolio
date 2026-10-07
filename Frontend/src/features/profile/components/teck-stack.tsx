@@ -35,17 +35,21 @@ export async function TeckStack() {
                   aria-label={tech.title}
                   className="transition-transform hover:scale-110"
                 >
-                  <Image
-                    src={tech.iconUrl}
-                    alt={`${tech.title} icon`}
-                    width={32}
-                    height={32}
-                    unoptimized
-                    className={cn(
-                      "h-8 w-8 object-contain",
-                      tech.theme && "dark:invert"
-                    )}
-                  />
+                  {tech.iconUrl ? (
+                    <Image
+                      src={tech.iconUrl}
+                      alt={`${tech.title} icon`}
+                      width={32}
+                      height={32}
+                      unoptimized
+                      className={cn(
+                        "h-8 w-8 object-contain",
+                        tech.theme && "dark:invert"
+                      )}
+                    />
+                  ) : (
+                    <span className="text-xs font-mono font-medium">{tech.title}</span>
+                  )}
                   <span className="sr-only">{tech.title}</span>
                 </a>
               </SimpleTooltip>
