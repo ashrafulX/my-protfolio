@@ -4,13 +4,23 @@ from .models import AboutSection, Achievement, BlogPost, Category, Certification
 
 
 def media_or_url(request, field, fallback=""):
+    if not field:
+        return fallback
     try:
-        value = field.url if field and field.name else ""
-    except ValueError:
+        url_attr = getattr(field, "url", None)
+        if callable(url_attr):
+            value = str(url_attr())
+        elif url_attr is not None:
+            value = str(url_attr)
+        else:
+            value = str(field) if str(field) else ""
+    except Exception:
         value = ""
+
     if value and request and not value.startswith(("http://", "https://")):
         return request.build_absolute_uri(value)
     return value or fallback
+
 
 
 class ProfileSerializer(serializers.ModelSerializer):

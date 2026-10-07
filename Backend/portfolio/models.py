@@ -2,17 +2,17 @@ import math
 import re
 from django.utils import timezone
 
+from cloudinary.models import CloudinaryField
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.text import slugify
-
 
 
 class Profile(models.Model):
     name = models.CharField(max_length=160)
     professional_title = models.CharField(max_length=160)
     short_title = models.CharField(max_length=160, blank=True)
-    profile_image = models.ImageField(upload_to="profile/", blank=True)
+    profile_image = CloudinaryField("image", folder="profile", blank=True, null=True)
     profile_image_url = models.URLField(blank=True)
     email = models.EmailField(blank=True)
     phone = models.CharField(max_length=80, blank=True)
@@ -60,9 +60,9 @@ class Project(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     short_description = models.TextField(blank=True)
     full_description = models.TextField(blank=True)
-    logo_image = models.ImageField(upload_to="projects/logos/", blank=True)
+    logo_image = CloudinaryField("image", folder="projects/logos", blank=True, null=True)
     logo_image_url = models.URLField(blank=True)
-    featured_image = models.ImageField(upload_to="projects/", blank=True)
+    featured_image = CloudinaryField("image", folder="projects", blank=True, null=True)
     featured_image_url = models.URLField(blank=True)
     technologies = models.JSONField(default=list, blank=True)
     github_url = models.URLField(blank=True)
@@ -129,7 +129,7 @@ class Skill(models.Model):
     title = models.CharField(max_length=120)
     href = models.URLField(blank=True)
     icon_url = models.URLField(blank=True)
-    icon = models.ImageField(upload_to="skills/", blank=True)
+    icon = CloudinaryField("image", folder="skills", blank=True, null=True)
     categories = models.JSONField(default=list, blank=True)
     order = models.PositiveIntegerField(default=0)
     is_visible = models.BooleanField(default=True)
@@ -158,7 +158,7 @@ class SocialLink(models.Model):
 
 class Resume(models.Model):
     title = models.CharField(max_length=160, default="My Resume")
-    file = models.FileField(upload_to="resume/", blank=True)
+    file = CloudinaryField("auto", folder="resume", blank=True, null=True)
     external_url = models.URLField(blank=True)
     is_current = models.BooleanField(default=True)
     uploaded_at = models.DateTimeField(auto_now=True)
@@ -260,7 +260,7 @@ class BlogPost(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     excerpt = models.TextField(blank=True)
     content = models.TextField(blank=True, help_text="Markdown is supported by the frontend.")
-    featured_image = models.ImageField(upload_to="blog/", blank=True)
+    featured_image = CloudinaryField("image", folder="blog", blank=True, null=True)
     author = models.CharField(max_length=160, blank=True)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL, related_name="posts")
     tags = models.ManyToManyField(Tag, blank=True, related_name="posts")

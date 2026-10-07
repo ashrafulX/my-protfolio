@@ -21,18 +21,6 @@ if not SECRET_KEY:
 
 ALLOWED_HOSTS = ['.vercel.app','127.0.0.1']
 
-INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "corsheaders",
-    "rest_framework",
-    "portfolio",
-]
-
 CLOUDINARY_URL = os.getenv("CLOUDINARY_URL", "").strip()
 USE_CLOUDINARY_MEDIA = env_bool("USE_CLOUDINARY_MEDIA", bool(CLOUDINARY_URL))
 USE_CLOUDINARY_STATIC = env_bool("USE_CLOUDINARY_STATIC", False)
@@ -43,12 +31,25 @@ CLOUDINARY_ENABLED = (
     and (USE_CLOUDINARY_MEDIA or USE_CLOUDINARY_STATIC)
 )
 
-if CLOUDINARY_ENABLED:
+if CLOUDINARY_URL:
     CLOUDINARY_STORAGE = {
         "CLOUDINARY_URL": CLOUDINARY_URL,
     }
-    INSTALLED_APPS.insert(INSTALLED_APPS.index("django.contrib.staticfiles"), "cloudinary_storage")
-    INSTALLED_APPS.append("cloudinary")
+
+INSTALLED_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "cloudinary_storage",
+    "django.contrib.staticfiles",
+    "cloudinary",
+    "corsheaders",
+    "rest_framework",
+    "portfolio",
+]
+
 
 
 
