@@ -1,4 +1,5 @@
-import { cmsGet, type CmsProfile } from "@/lib/cms-api";
+import type { CmsProfile } from "@/lib/cms-api";
+import { cmsGet } from "@/lib/cms-api";
 import { cn } from "@/lib/utils";
 import { FlipSentences } from "@/registry/flip-sentences";
 

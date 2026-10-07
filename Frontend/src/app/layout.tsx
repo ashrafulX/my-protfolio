@@ -3,10 +3,10 @@ import "@/styles/globals.css";
 import type { Metadata, Viewport } from "next";
 import type { WebSite, WithContext } from "schema-dts";
 
-
 import { Providers } from "@/components/providers";
 import { META_THEME_COLORS, SITE_INFO } from "@/config/site";
-import { cmsGet, type CmsProfile } from "@/lib/cms-api";
+import type { CmsProfile } from "@/lib/cms-api";
+import { cmsGet } from "@/lib/cms-api";
 import { fontMono, fontSans } from "@/lib/fonts";
 
 function getWebSiteJsonLd(profile: CmsProfile | null): WithContext<WebSite> {
