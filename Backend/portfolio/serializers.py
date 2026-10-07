@@ -4,35 +4,44 @@ from .models import AboutSection, Achievement, BlogPost, Category, Certification
 
 
 def media_or_url(request, field, fallback=""):
-    if not field:
-        return fallback
-    try:
-        url_attr = getattr(field, "url", None)
-        if callable(url_attr):
-            value = str(url_attr())
-        elif url_attr is not None:
-            value = str(url_attr)
-        else:
-            value = str(field) if str(field) else ""
-    except Exception:
-        value = ""
+    value = ""
+    if field:
+        try:
+            if hasattr(field, "build_url"):
+                value = field.build_url(secure=True)
+            else:
+                url_attr = getattr(field, "url", None)
+                if callable(url_attr):
+                    value = str(url_attr())
+                elif url_attr is not None:
+                    value = str(url_attr)
+                else:
+                    value = str(field) if str(field) else ""
+        except Exception:
+            value = ""
+
+    if not value:
+        value = fallback or ""
+
+    if value.startswith("http://res.cloudinary.com"):
+        value = "https://" + value[7:]
 
     if value and request and not value.startswith(("http://", "https://")):
         return request.build_absolute_uri(value)
-    return value or fallback
 
+    return value
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    displayName = serializers.CharField(source="name")
-    jobTitle = serializers.CharField(source="professional_title")
+    displayName = serializers.CharField(source="name", default="")
+    jobTitle = serializers.CharField(source="professional_title", default="")
     jobs = serializers.SerializerMethodField()
     avatar = serializers.SerializerMethodField()
-    phoneNumber = serializers.CharField(source="phone")
-    website = serializers.CharField()
-    address = serializers.CharField(source="location")
-    username = serializers.CharField(source="github_username")
-    dateCreated = serializers.DateField(source="created_date", allow_null=True)
+    phoneNumber = serializers.CharField(source="phone", default="")
+    website = serializers.CharField(default="")
+    address = serializers.CharField(source="location", default="")
+    username = serializers.CharField(source="github_username", default="")
+    dateCreated = serializers.DateField(source="created_date", allow_null=True, required=False)
 
     class Meta:
         model = Profile
@@ -43,6 +52,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_avatar(self, obj):
         return media_or_url(self.context.get("request"), obj.profile_image, obj.profile_image_url)
+
 
 class AboutSerializer(serializers.ModelSerializer):
     class Meta:
