@@ -40,11 +40,6 @@ const DEFAULT_PROFILE: CmsProfile = {
       company: "SoftZen IT",
       website: "https://softzenit.com",
     },
-    {
-      title: "Computer Science Student",
-      company: "Northern University Bangladesh",
-      website: "https://nub.ac.bd",
-    },
   ],
   flipSentences: [
     "Backend Developer",
@@ -67,21 +62,10 @@ export async function Overview() {
     website: apiProfile?.website || DEFAULT_PROFILE.website,
     address: apiProfile?.address || DEFAULT_PROFILE.address,
     email: apiProfile?.email || DEFAULT_PROFILE.email,
-    jobs: apiProfile?.jobs !== undefined && apiProfile?.jobs !== null
-      ? (apiProfile.jobs.length >= 2
-          ? [
-              apiProfile.jobs[0],
-              {
-                ...apiProfile.jobs[1],
-                title: apiProfile.jobs[1].title === "Bachelor's degree" ? "Computer Science Student" : apiProfile.jobs[1].title,
-              }
-            ]
-          : apiProfile.jobs)
-      : DEFAULT_PROFILE.jobs,
+    jobs: apiProfile?.jobs && apiProfile.jobs.length > 0 ? apiProfile.jobs : DEFAULT_PROFILE.jobs,
   };
 
   const primaryJob = profile.jobs?.[0] || DEFAULT_PROFILE.jobs[0];
-  const secondaryJob = profile.jobs?.[1];
 
   return (
     <Panel>
@@ -98,30 +82,8 @@ export async function Overview() {
         )}
 
         <div className="grid gap-x-12 gap-y-2.5 sm:grid-cols-2">
-          {/* Row 1 Left: Secondary Job */}
-          {secondaryJob ? (
-            <JobItem
-              title={secondaryJob.title}
-              company={secondaryJob.company}
-              website={secondaryJob.website}
-              prefix=" @"
-            />
-          ) : <div className="hidden sm:block" />}
-
-          {/* Row 1 Right: Pronouns */}
-          {profile.pronouns ? (
-            <IntroItem>
-              <IntroItemIcon>
-                <MarsIcon />
-              </IntroItemIcon>
-              <IntroItemContent aria-label={`Pronouns: ${profile.pronouns}`}>
-                {profile.pronouns}
-              </IntroItemContent>
-            </IntroItem>
-          ) : <div />}
-
-          {/* Row 2 Left: Location */}
-          {profile.address ? (
+          {/* Row 1 Left: Location */}
+          {profile.address && (
             <IntroItem>
               <IntroItemIcon>
                 <MapPinIcon />
@@ -135,38 +97,27 @@ export async function Overview() {
                 </IntroItemLink>
               </IntroItemContent>
             </IntroItem>
-          ) : <div />}
+          )}
 
-          {/* Row 2 Right: Current Local Time */}
-          {profile.timezone ? (
+          {/* Row 1 Right: Pronouns */}
+          {profile.pronouns && (
+            <IntroItem>
+              <IntroItemIcon>
+                <MarsIcon />
+              </IntroItemIcon>
+              <IntroItemContent aria-label={`Pronouns: ${profile.pronouns}`}>
+                {profile.pronouns}
+              </IntroItemContent>
+            </IntroItem>
+          )}
+
+          {/* Row 2 Left: Current Local Time */}
+          {profile.timezone && (
             <CurrentLocalTimeItem timeZone={profile.timezone} />
-          ) : <div />}
+          )}
 
-          {/* Row 3 Left: Phone */}
-          {profile.phoneNumber ? (
-            <PhoneItem phoneNumber={profile.phoneNumber} />
-          ) : <div />}
-
-          {/* Row 3 Right: Secondary Phone */}
-          {profile.secondary_phone ? (
-            <PhoneItem
-              phoneNumber={profile.secondary_phone}
-              label={profile.secondary_phone_label || "WhatsApp"}
-            />
-          ) : profile.phoneNumber ? (
-            <PhoneItem
-              phoneNumber={profile.phoneNumber}
-              label={profile.secondary_phone_label || "WhatsApp"}
-            />
-          ) : <div />}
-
-          {/* Row 4 Left: Email */}
-          {profile.email ? (
-            <EmailItem email={profile.email} />
-          ) : <div />}
-
-          {/* Row 4 Right: Website */}
-          {profile.website ? (
+          {/* Row 2 Right: Website */}
+          {profile.website && (
             <IntroItem>
               <IntroItemIcon>
                 <GlobeIcon />
@@ -180,7 +131,30 @@ export async function Overview() {
                 </IntroItemLink>
               </IntroItemContent>
             </IntroItem>
-          ) : <div />}
+          )}
+
+          {/* Row 3 Left: Phone */}
+          {profile.phoneNumber && (
+            <PhoneItem phoneNumber={profile.phoneNumber} />
+          )}
+
+          {/* Row 3 Right: Secondary Phone / WhatsApp */}
+          {profile.secondary_phone ? (
+            <PhoneItem
+              phoneNumber={profile.secondary_phone}
+              label={profile.secondary_phone_label || "WhatsApp"}
+            />
+          ) : profile.phoneNumber ? (
+            <PhoneItem
+              phoneNumber={profile.phoneNumber}
+              label={profile.secondary_phone_label || "WhatsApp"}
+            />
+          ) : null}
+
+          {/* Row 4 Left: Email */}
+          {profile.email && (
+            <EmailItem email={profile.email} />
+          )}
         </div>
       </PanelContent>
     </Panel>

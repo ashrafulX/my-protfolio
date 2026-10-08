@@ -105,25 +105,6 @@ class ProfileSerializer(serializers.ModelSerializer):
             "website": job1_website,
         })
 
-        try:
-            edu = Education.objects.filter(is_visible=True).order_by("order").first()
-        except Exception:
-            edu = None
-
-        if edu:
-            job2_title = (
-                edu.degree if edu.degree and edu.degree.strip().lower() != "bachelor's degree"
-                else (f"{edu.field_of_study} Student" if edu.field_of_study else "Computer Science Student")
-            )
-            job2_company = edu.institution or "Northern University Bangladesh"
-            job2_website = "https://nub.ac.bd"
-
-            result.append({
-                "title": job2_title,
-                "company": job2_company,
-                "website": job2_website,
-            })
-
         return result
 
     def get_secondary_phone(self, obj):
