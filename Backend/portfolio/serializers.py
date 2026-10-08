@@ -110,15 +110,19 @@ class ProfileSerializer(serializers.ModelSerializer):
         except Exception:
             edu = None
 
-        job2_title = "Computer Science Student"
-        job2_company = (edu.institution if edu and edu.institution else "Northern University Bangladesh")
-        job2_website = "https://nub.ac.bd"
+        if edu:
+            job2_title = (
+                edu.degree if edu.degree and edu.degree.strip().lower() != "bachelor's degree"
+                else (f"{edu.field_of_study} Student" if edu.field_of_study else "Computer Science Student")
+            )
+            job2_company = edu.institution or "Northern University Bangladesh"
+            job2_website = "https://nub.ac.bd"
 
-        result.append({
-            "title": job2_title,
-            "company": job2_company,
-            "website": job2_website,
-        })
+            result.append({
+                "title": job2_title,
+                "company": job2_company,
+                "website": job2_website,
+            })
 
         return result
 

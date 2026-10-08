@@ -67,21 +67,21 @@ export async function Overview() {
     website: apiProfile?.website || DEFAULT_PROFILE.website,
     address: apiProfile?.address || DEFAULT_PROFILE.address,
     email: apiProfile?.email || DEFAULT_PROFILE.email,
-    jobs: (apiProfile?.jobs && apiProfile.jobs.length >= 2)
-      ? [
-          apiProfile.jobs[0],
-          {
-            ...apiProfile.jobs[1],
-            title: apiProfile.jobs[1].title === "Bachelor's degree" ? "Computer Science Student" : apiProfile.jobs[1].title,
-          }
-        ]
-      : (apiProfile?.jobs && apiProfile.jobs.length === 1)
-        ? [apiProfile.jobs[0], DEFAULT_PROFILE.jobs[1]]
-        : DEFAULT_PROFILE.jobs,
+    jobs: apiProfile?.jobs !== undefined && apiProfile?.jobs !== null
+      ? (apiProfile.jobs.length >= 2
+          ? [
+              apiProfile.jobs[0],
+              {
+                ...apiProfile.jobs[1],
+                title: apiProfile.jobs[1].title === "Bachelor's degree" ? "Computer Science Student" : apiProfile.jobs[1].title,
+              }
+            ]
+          : apiProfile.jobs)
+      : DEFAULT_PROFILE.jobs,
   };
 
   const primaryJob = profile.jobs?.[0] || DEFAULT_PROFILE.jobs[0];
-  const secondaryJob = profile.jobs?.[1] || DEFAULT_PROFILE.jobs[1];
+  const secondaryJob = profile.jobs?.[1];
 
   return (
     <Panel>
@@ -106,7 +106,7 @@ export async function Overview() {
               website={secondaryJob.website}
               prefix=" @"
             />
-          ) : <div />}
+          ) : <div className="hidden sm:block" />}
 
           {/* Row 1 Right: Pronouns */}
           {profile.pronouns ? (
