@@ -7,17 +7,20 @@ import { ProfileAvatar } from "./profile-avatar";
 import { VerifiedIcon } from "./verified-icon";
 
 export async function ProfileHeader() {
-  const profile = await cmsGet<CmsProfile>("profile/");
-  if (!profile) return <div className="border-x border-edge px-4 py-8 text-sm text-muted-foreground">Profile unavailable.</div>;
-
-  const flipSentences = profile.flipSentences?.length
-    ? profile.flipSentences
-    : [
-        profile.jobTitle || "Software Engineer",
-        "Full Stack Web Developer",
-        "Competitive Programmer",
-        "CSE Undergraduate",
-      ];
+  const apiProfile = await cmsGet<CmsProfile>("profile/");
+  const profile = {
+    displayName: apiProfile?.displayName || "Md. Ashraful Islam",
+    jobTitle: apiProfile?.jobTitle || "Backend Developer",
+    avatar: apiProfile?.avatar || "/images/profile/avatar.jpg",
+    flipSentences: apiProfile?.flipSentences?.length
+      ? apiProfile.flipSentences
+      : [
+          apiProfile?.jobTitle || "Backend Developer",
+          "Full Stack Web Developer",
+          "Competitive Programmer",
+          "CSE Undergraduate",
+        ],
+  };
 
   return (
     <div className="screen-line-after flex border-x border-edge">
@@ -45,7 +48,7 @@ export async function ProfileHeader() {
           </h1>
 
           <div className="h-12 border-t border-edge py-1 pl-4 sm:h-auto">
-            <FlipSentences sentences={flipSentences} />
+            <FlipSentences sentences={profile.flipSentences} />
           </div>
         </div>
       </div>

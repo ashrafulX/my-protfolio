@@ -43,8 +43,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="github_username", default="")
     dateCreated = serializers.DateField(source="created_date", allow_null=True, required=False)
 
-    secondary_phone = serializers.CharField(default="")
-    secondary_phone_label = serializers.CharField(default="")
+    secondary_phone = serializers.SerializerMethodField()
+    secondary_phone_label = serializers.SerializerMethodField()
     flipSentences = serializers.SerializerMethodField()
 
     class Meta:
@@ -59,53 +59,55 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_jobs(self, obj):
         result = []
-        # Primary Job
-        job1_title = getattr(obj, "professional_title", "")
-        job1_company = getattr(obj, "company", "")
-        job1_website = getattr(obj, "company_website", "")
-
-        # Fallback to Experience if company not explicitly specified in Profile
-        if not job1_company:
+        try:
             exp = Experience.objects.filter(is_visible=True).order_by("order").first()
-            if exp:
-                job1_company = exp.company
-                job1_title = job1_title or exp.position
+        except Exception:
+            exp = None
 
-        if job1_title or job1_company:
-            result.append({
-                "title": job1_title,
-                "company": job1_company,
-                "website": job1_website,
-            })
+        job1_title = obj.professional_title or (exp.position if exp else "Backend Developer")
+        job1_company = exp.company if exp else "SoftZen IT"
+        job1_website = "https://softzenit.com"
 
-        # Secondary Job
-        job2_title = getattr(obj, "secondary_job_title", "")
-        job2_company = getattr(obj, "secondary_job_company", "")
-        job2_website = getattr(obj, "secondary_job_website", "")
+        result.append({
+            "title": job1_title,
+            "company": job1_company,
+            "website": job1_website,
+        })
 
-        # Fallback to Education or second Experience if not set
-        if not job2_title and not job2_company:
+        try:
             edu = Education.objects.filter(is_visible=True).order_by("order").first()
-            if edu:
-                job2_title = edu.degree or "Computer Science Student"
-                job2_company = edu.institution
-                job2_website = "https://nub.ac.bd"
+        except Exception:
+            edu = None
 
-        if job2_title or job2_company:
-            result.append({
-                "title": job2_title,
-                "company": job2_company,
-                "website": job2_website,
-            })
+        job2_title = (edu.degree if edu and edu.degree else "Computer Science Student")
+        job2_company = (edu.institution if edu and edu.institution else "Northern University Bangladesh")
+        job2_website = "https://nub.ac.bd"
+
+        result.append({
+            "title": job2_title,
+            "company": job2_company,
+            "website": job2_website,
+        })
 
         return result
 
+    def get_secondary_phone(self, obj):
+        try:
+            whatsapp = SocialLink.objects.filter(is_visible=True, platform__icontains="whatsapp").first()
+            if whatsapp and whatsapp.url:
+                clean = whatsapp.url.replace("https://wa.me/", "").replace("https://api.whatsapp.com/send?phone=", "").replace("tel:", "").strip()
+                return clean if clean.startswith("+") else f"+{clean}"
+        except Exception:
+            pass
+        return obj.phone or "+880 1590 026285"
+
+    def get_secondary_phone_label(self, obj):
+        return "WhatsApp"
+
     def get_flipSentences(self, obj):
-        custom = getattr(obj, "flip_sentences", None)
-        if custom and isinstance(custom, list) and len(custom) > 0:
-            return custom
+        title = obj.professional_title or "Backend Developer"
         return [
-            obj.professional_title or "Software Engineer",
+            title,
             "Full Stack Web Developer",
             "Competitive Programmer",
             "CSE Undergraduate",

@@ -12,19 +12,12 @@ class ProfileAdmin(admin.ModelAdmin):
             "fields": (
                 "name", "professional_title", "short_title",
                 "profile_image", "profile_image_url",
-                "hero_description", "availability", "flip_sentences"
-            )
-        }),
-        ("Current Positions / Overview", {
-            "fields": (
-                "company", "company_website",
-                "secondary_job_title", "secondary_job_company", "secondary_job_website"
+                "hero_description", "availability"
             )
         }),
         ("Contact", {
             "fields": (
-                "email", "phone", "secondary_phone", "secondary_phone_label",
-                "location", "pronouns", "website", "timezone"
+                "email", "phone", "location", "pronouns", "website", "timezone"
             )
         }),
         ("Social profiles", {"fields": ("github_username",)}),

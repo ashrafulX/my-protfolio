@@ -14,10 +14,16 @@ class FirstRecordView(APIView):
     serializer_class = None
 
     def get(self, request):
-        instance = self.model.objects.first()
+        try:
+            instance = self.model.objects.first()
+        except Exception:
+            instance = None
         if not instance:
             return Response(None)
-        return Response(self.serializer_class(instance, context={"request": request}).data)
+        try:
+            return Response(self.serializer_class(instance, context={"request": request}).data)
+        except Exception:
+            return Response(None)
 
 
 class ProfileView(FirstRecordView):

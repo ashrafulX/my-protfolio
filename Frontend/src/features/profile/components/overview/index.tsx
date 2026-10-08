@@ -16,12 +16,56 @@ import {
 import { JobItem } from "./job-item";
 import { PhoneItem } from "./phone-item";
 
-export async function Overview() {
-  const profile = await cmsGet<CmsProfile>("profile/");
-  if (!profile) return <section className="border-x border-edge px-4 py-6 text-sm text-muted-foreground">Profile information unavailable.</section>;
+const DEFAULT_PROFILE: CmsProfile = {
+  displayName: "Md. Ashraful Islam",
+  jobTitle: "Backend Developer",
+  short_title: "Software Engineer",
+  pronouns: "he/him",
+  email: "ashrafulwho@gmail.com",
+  phoneNumber: "+880 1590 026285",
+  secondary_phone: "+880 1590 026285",
+  secondary_phone_label: "WhatsApp",
+  website: "https://ashraful.site",
+  address: "Dhaka, Bangladesh",
+  username: "ashrafulX",
+  availability: "Available for hire",
+  hero_description: "Building with code. Learning one problem at a time.",
+  seo_keywords: ["Md. Ashraful Islam", "Backend Developer", "Software Engineer"],
+  timezone: "Asia/Dhaka",
+  avatar: "/images/profile/avatar.jpg",
+  dateCreated: "2026-07-17",
+  jobs: [
+    {
+      title: "Backend Developer",
+      company: "SoftZen IT",
+      website: "https://softzenit.com",
+    },
+    {
+      title: "Computer Science Student",
+      company: "Northern University Bangladesh",
+      website: "https://nub.ac.bd",
+    },
+  ],
+  flipSentences: [
+    "Backend Developer",
+    "Full Stack Web Developer",
+    "Competitive Programmer",
+    "CSE Undergraduate",
+  ],
+};
 
-  const primaryJob = profile.jobs?.[0];
-  const secondaryJob = profile.jobs?.[1];
+export async function Overview() {
+  const apiProfile = await cmsGet<CmsProfile>("profile/");
+  const profile: CmsProfile = {
+    ...DEFAULT_PROFILE,
+    ...(apiProfile || {}),
+    jobs: (apiProfile?.jobs && apiProfile.jobs.length > 0)
+      ? apiProfile.jobs
+      : DEFAULT_PROFILE.jobs,
+  };
+
+  const primaryJob = profile.jobs?.[0] || DEFAULT_PROFILE.jobs[0];
+  const secondaryJob = profile.jobs?.[1] || DEFAULT_PROFILE.jobs[1];
 
   return (
     <Panel>
