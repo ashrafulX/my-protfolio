@@ -5,7 +5,7 @@ import { SITE_INFO } from "@/config/site";
 export const dynamic = "force-static";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = SITE_INFO.url.replace(/\/+$/, "");
+  const baseUrl = SITE_INFO.url.trim().replace(/\/+$/, "");
 
   return {
     rules: [

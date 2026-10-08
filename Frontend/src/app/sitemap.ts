@@ -7,7 +7,7 @@ import { getAllPosts } from "@/features/blog/data/posts";
 export const revalidate = 60;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = SITE_INFO.url.replace(/\/+$/, "");
+  const baseUrl = SITE_INFO.url.trim().replace(/\/+$/, "");
 
   let allPosts: Awaited<ReturnType<typeof getAllPosts>> = [];
   try {
