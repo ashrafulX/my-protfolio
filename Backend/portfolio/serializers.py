@@ -43,12 +43,33 @@ class ProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="github_username", default="")
     dateCreated = serializers.DateField(source="created_date", allow_null=True, required=False)
 
+    flipSentences = serializers.SerializerMethodField()
+
     class Meta:
         model = Profile
-        fields = ["displayName", "jobTitle", "short_title", "pronouns", "email", "phoneNumber", "website", "address", "username", "availability", "hero_description", "seo_keywords", "timezone", "avatar", "dateCreated", "jobs"]
+        fields = ["displayName", "jobTitle", "short_title", "pronouns", "email", "phoneNumber", "website", "address", "username", "availability", "hero_description", "seo_keywords", "timezone", "avatar", "dateCreated", "jobs", "flipSentences"]
 
     def get_jobs(self, obj):
-        return [{"title": obj.professional_title, "company": "", "website": ""}] if obj.professional_title else []
+        return [
+            {
+                "title": obj.professional_title or "Software Engineer",
+                "company": "SoftZen IT",
+                "website": "https://softzenit.com",
+            },
+            {
+                "title": "Computer Science Student",
+                "company": "Northern University Bangladesh",
+                "website": "https://nub.ac.bd",
+            },
+        ]
+
+    def get_flipSentences(self, obj):
+        return [
+            obj.professional_title or "Software Engineer",
+            "Full Stack Web Developer",
+            "Competitive Programmer",
+            "CSE Undergraduate",
+        ]
 
     def get_avatar(self, obj):
         return media_or_url(self.context.get("request"), obj.profile_image, obj.profile_image_url)

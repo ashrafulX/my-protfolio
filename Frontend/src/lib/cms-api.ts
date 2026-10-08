@@ -48,6 +48,7 @@ export type CmsProfile = {
   avatar: string;
   dateCreated: string | null;
   jobs: { title: string; company: string; website: string }[];
+  flipSentences?: string[];
 };
 
 export type ApiList<T> = { results: T[]; count: number; next: string | null; previous: string | null };

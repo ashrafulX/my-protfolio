@@ -4,10 +4,22 @@ import { cn } from "@/lib/utils";
 import { FlipSentences } from "@/registry/flip-sentences";
 
 import { ProfileAvatar } from "./profile-avatar";
+import { PronounceMyName } from "./pronounce-my-name";
+import { VerifiedIcon } from "./verified-icon";
 
 export async function ProfileHeader() {
   const profile = await cmsGet<CmsProfile>("profile/");
   if (!profile) return <div className="border-x border-edge px-4 py-8 text-sm text-muted-foreground">Profile unavailable.</div>;
+
+  const flipSentences = profile.flipSentences?.length
+    ? profile.flipSentences
+    : [
+        profile.jobTitle || "Software Engineer",
+        "Full Stack Web Developer",
+        "Competitive Programmer",
+        "CSE Undergraduate",
+      ];
+
   return (
     <div className="screen-line-after flex border-x border-edge">
       {profile.avatar && <ProfileAvatar avatar={profile.avatar} displayName={profile.displayName} />}
@@ -28,12 +40,14 @@ export async function ProfileHeader() {
         </div>
 
         <div className="border-t border-edge">
-          <h1 className="flex items-center pl-4 text-3xl font-semibold">
-            {profile.displayName}
+          <h1 className="flex items-center gap-2 pl-4 text-3xl font-semibold">
+            <span>{profile.displayName}</span>
+            <VerifiedIcon className="size-[0.65em] text-[#0095f6]" aria-label="Verified profile" />
+            <PronounceMyName namePronunciationUrl="/audio/ui-sounds/unlock.wav" />
           </h1>
 
           <div className="h-12 border-t border-edge py-1 pl-4 sm:h-auto">
-            <FlipSentences sentences={[profile.jobTitle]} />
+            <FlipSentences sentences={flipSentences} />
           </div>
         </div>
       </div>

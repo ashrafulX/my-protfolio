@@ -14,9 +14,10 @@ import {
 
 type PhoneItemProps = {
   phoneNumber: string;
+  label?: string;
 };
 
-export function PhoneItem({ phoneNumber }: PhoneItemProps) {
+export function PhoneItem({ phoneNumber, label }: PhoneItemProps) {
   const isClient = useIsClient();
   const phoneNumberDecoded = phoneNumber;
 
@@ -39,6 +40,11 @@ export function PhoneItem({ phoneNumber }: PhoneItemProps) {
             ? formatPhoneNumber(phoneNumberDecoded)
             : "[Phone protected]"}
         </IntroItemLink>
+        {label && (
+          <span className="text-muted-foreground font-mono text-sm ml-1 select-none">
+            {` // ${label}`}
+          </span>
+        )}
       </IntroItemContent>
     </IntroItem>
   );

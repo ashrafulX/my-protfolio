@@ -15,11 +15,11 @@ import {
 } from "./intro-item";
 
 function getJobIcon(title: string) {
-  if (/(developer|engineer)/i.test(title)) {
+  if (/(developer|engineer|coder|programmer)/i.test(title)) {
     return <CodeXmlIcon />;
   }
 
-  if (/(founder|co-founder)/i.test(title)) {
+  if (/(founder|co-founder|student|researcher)/i.test(title)) {
     return <LightbulbIcon />;
   }
 
@@ -30,25 +30,30 @@ type JobItemProps = {
   title: string;
   company: string;
   website: string;
+  prefix?: string;
 };
 
-export function JobItem({ title, company, website }: JobItemProps) {
+export function JobItem({ title, company, website, prefix = " @" }: JobItemProps) {
   return (
     <IntroItem>
       <IntroItemIcon>{getJobIcon(title)}</IntroItemIcon>
 
       <IntroItemContent>
         {title}
-        {company && website && (
+        {company && (
           <>
-            {" @"}
-            <IntroItemLink
-              className="ml-0.5 font-medium"
-              href={addQueryParams(website, UTM_PARAMS)}
-              aria-label={`${company} website`}
-            >
-              {company}
-            </IntroItemLink>
+            {prefix}
+            {website && website !== "#" ? (
+              <IntroItemLink
+                className="ml-0.5 font-medium"
+                href={addQueryParams(website, UTM_PARAMS)}
+                aria-label={`${company} website`}
+              >
+                {company}
+              </IntroItemLink>
+            ) : (
+              <span className="ml-0.5 font-medium">{company}</span>
+            )}
           </>
         )}
       </IntroItemContent>
