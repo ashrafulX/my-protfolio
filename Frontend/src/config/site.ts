@@ -1,10 +1,25 @@
 import type { NavItem } from "@/types/nav";
 
+const siteUrl = (
+  process.env.APP_URL ||
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://ashrafulx.vercel.app"
+)
+  .trim()
+  .replace(/\/+$/, "");
+
+const backendUrl = (
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://ashrafulx-server.vercel.app/api"
+)
+  .trim()
+  .replace(/\/+$/, "");
+
 export const SITE_INFO = {
   name: "Md. Ashraful Islam — Backend Developer & Software Engineer",
   shortName: "Md. Ashraful Islam",
-  url: process.env.APP_URL || process.env.NEXT_PUBLIC_SITE_URL || "https://ashrafulx.vercel.app",
-  backendUrl: process.env.NEXT_PUBLIC_API_URL || "https://ashrafulx-server.vercel.app/api",
+  url: siteUrl,
+  backendUrl,
   description:
     "Official portfolio of Md. Ashraful Islam — Backend Developer, Software Engineer, and Competitive Programmer specializing in Django, React, PostgreSQL, and scalable systems.",
   keywords: [

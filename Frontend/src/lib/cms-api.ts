@@ -4,8 +4,12 @@ import type { Post, PostMetadata } from "@/features/blog/types/post";
 
 const API_URL = (
   process.env.NEXT_PUBLIC_API_URL ||
-  (process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000/api" : "")
-).replace(/\/+$/, "");
+  (process.env.NODE_ENV === "development"
+    ? "http://127.0.0.1:8000/api"
+    : "https://ashrafulx-server.vercel.app/api")
+)
+  .trim()
+  .replace(/\/+$/, "");
 
 export const REVALIDATE_SECONDS = 60;
 
