@@ -260,7 +260,7 @@ class BlogPost(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     excerpt = models.TextField(blank=True)
     content = models.TextField(blank=True, help_text="Markdown is supported by the frontend.")
-    featured_image = CloudinaryField("image", folder="blog", blank=True, null=True)
+    featured_image = CloudinaryField("image", folder="blog", blank=True, null=False, default="")
     author = models.CharField(max_length=160, blank=True)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL, related_name="posts")
     tags = models.ManyToManyField(Tag, blank=True, related_name="posts")
@@ -282,6 +282,8 @@ class BlogPost(models.Model):
             self.author = profile.name if profile else ""
         if self.status == self.Status.PUBLISHED and not self.published_at:
             self.published_at = timezone.now()
+        if not self.featured_image:
+            self.featured_image = ""
         if self.content:
             plain_text = re.sub(r"<[^>]+>", " ", self.content)
             self.reading_time = max(1, math.ceil(len(re.findall(r"\w+", plain_text)) / 200))

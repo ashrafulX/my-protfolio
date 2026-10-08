@@ -148,6 +148,11 @@ class BlogPostAdminForm(forms.ModelForm):
         model = BlogPost
         fields = "__all__"
 
+    def clean_featured_image(self):
+        val = self.cleaned_data.get("featured_image")
+        return val if val else ""
+
+
 
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
