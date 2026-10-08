@@ -20,97 +20,107 @@ export async function Overview() {
   const profile = await cmsGet<CmsProfile>("profile/");
   if (!profile) return <section className="border-x border-edge px-4 py-6 text-sm text-muted-foreground">Profile information unavailable.</section>;
 
-  const primaryJob = profile.jobs?.[0] ?? {
-    title: profile.jobTitle || "Software Engineer",
-    company: "SoftZen IT",
-    website: "https://softzenit.com",
-  };
-
-  const secondaryJob = profile.jobs?.[1] ?? {
-    title: "Computer Science Student",
-    company: "Northern University Bangladesh",
-    website: "https://nub.ac.bd",
-  };
-
-  const address = profile.address || "Dhaka, Bangladesh";
-  const email = profile.email || "ashrafulwho@gmail.com";
-  const phone = profile.phoneNumber || "+8801590-026285";
-  const pronouns = profile.pronouns || "he/him";
-  const timezone = profile.timezone || "Asia/Dhaka";
-  const website = profile.website || "https://ashraful.site";
+  const primaryJob = profile.jobs?.[0];
+  const secondaryJob = profile.jobs?.[1];
 
   return (
     <Panel>
       <h2 className="sr-only">Overview</h2>
 
       <PanelContent className="space-y-2.5">
-        <JobItem
-          title={primaryJob.title}
-          company={primaryJob.company}
-          website={primaryJob.website}
-          prefix=" At @"
-        />
+        {primaryJob && (
+          <JobItem
+            title={primaryJob.title}
+            company={primaryJob.company}
+            website={primaryJob.website}
+            prefix=" At @"
+          />
+        )}
 
         <div className="grid gap-x-12 gap-y-2.5 sm:grid-cols-2">
           {/* Row 1 Left: Secondary Job */}
-          <JobItem
-            title={secondaryJob.title}
-            company={secondaryJob.company}
-            website={secondaryJob.website}
-            prefix=" @"
-          />
+          {secondaryJob ? (
+            <JobItem
+              title={secondaryJob.title}
+              company={secondaryJob.company}
+              website={secondaryJob.website}
+              prefix=" @"
+            />
+          ) : <div />}
 
           {/* Row 1 Right: Pronouns */}
-          <IntroItem>
-            <IntroItemIcon>
-              <MarsIcon />
-            </IntroItemIcon>
-            <IntroItemContent aria-label={`Pronouns: ${pronouns}`}>
-              {pronouns}
-            </IntroItemContent>
-          </IntroItem>
+          {profile.pronouns ? (
+            <IntroItem>
+              <IntroItemIcon>
+                <MarsIcon />
+              </IntroItemIcon>
+              <IntroItemContent aria-label={`Pronouns: ${profile.pronouns}`}>
+                {profile.pronouns}
+              </IntroItemContent>
+            </IntroItem>
+          ) : <div />}
 
           {/* Row 2 Left: Location */}
-          <IntroItem>
-            <IntroItemIcon>
-              <MapPinIcon />
-            </IntroItemIcon>
-            <IntroItemContent>
-              <IntroItemLink
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}
-                aria-label={`Location: ${address}`}
-              >
-                {address}
-              </IntroItemLink>
-            </IntroItemContent>
-          </IntroItem>
+          {profile.address ? (
+            <IntroItem>
+              <IntroItemIcon>
+                <MapPinIcon />
+              </IntroItemIcon>
+              <IntroItemContent>
+                <IntroItemLink
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(profile.address)}`}
+                  aria-label={`Location: ${profile.address}`}
+                >
+                  {profile.address}
+                </IntroItemLink>
+              </IntroItemContent>
+            </IntroItem>
+          ) : <div />}
 
           {/* Row 2 Right: Current Local Time */}
-          <CurrentLocalTimeItem timeZone={timezone} />
+          {profile.timezone ? (
+            <CurrentLocalTimeItem timeZone={profile.timezone} />
+          ) : <div />}
 
           {/* Row 3 Left: Phone */}
-          <PhoneItem phoneNumber={phone} />
+          {profile.phoneNumber ? (
+            <PhoneItem phoneNumber={profile.phoneNumber} />
+          ) : <div />}
 
-          {/* Row 3 Right: WhatsApp / Secondary Phone */}
-          <PhoneItem phoneNumber={phone} label="WhatsApp" />
+          {/* Row 3 Right: Secondary Phone */}
+          {profile.secondary_phone ? (
+            <PhoneItem
+              phoneNumber={profile.secondary_phone}
+              label={profile.secondary_phone_label || "WhatsApp"}
+            />
+          ) : profile.phoneNumber ? (
+            <PhoneItem
+              phoneNumber={profile.phoneNumber}
+              label={profile.secondary_phone_label || "WhatsApp"}
+            />
+          ) : <div />}
 
           {/* Row 4 Left: Email */}
-          <EmailItem email={email} />
+          {profile.email ? (
+            <EmailItem email={profile.email} />
+          ) : <div />}
 
           {/* Row 4 Right: Website */}
-          <IntroItem>
-            <IntroItemIcon>
-              <GlobeIcon />
-            </IntroItemIcon>
-            <IntroItemContent>
-              <IntroItemLink
-                href={website}
-                aria-label={`Personal website: ${urlToName(website)}`}
-              >
-                {urlToName(website)}
-              </IntroItemLink>
-            </IntroItemContent>
-          </IntroItem>
+          {profile.website ? (
+            <IntroItem>
+              <IntroItemIcon>
+                <GlobeIcon />
+              </IntroItemIcon>
+              <IntroItemContent>
+                <IntroItemLink
+                  href={profile.website}
+                  aria-label={`Personal website: ${urlToName(profile.website)}`}
+                >
+                  {urlToName(profile.website)}
+                </IntroItemLink>
+              </IntroItemContent>
+            </IntroItem>
+          ) : <div />}
         </div>
       </PanelContent>
     </Panel>

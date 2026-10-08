@@ -38,6 +38,8 @@ export type CmsProfile = {
   pronouns: string;
   email: string;
   phoneNumber: string;
+  secondary_phone?: string;
+  secondary_phone_label?: string;
   website: string;
   address: string;
   username: string;

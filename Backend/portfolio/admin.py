@@ -7,7 +7,30 @@ from .models import AboutSection, Achievement, BlogPost, Category, Certification
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ("name", "professional_title", "email", "location", "updated_at")
     search_fields = ("name", "email", "github_username")
-    fieldsets = (("Identity", {"fields": ("name", "professional_title", "short_title", "profile_image", "profile_image_url", "hero_description", "availability")}), ("Contact", {"fields": ("email", "phone", "location", "pronouns", "website", "timezone")}), ("Social profiles", {"fields": ("github_username",)}), ("SEO", {"fields": ("seo_keywords",)}), ("Metadata", {"fields": ("created_date", "updated_at")}))
+    fieldsets = (
+        ("Identity", {
+            "fields": (
+                "name", "professional_title", "short_title",
+                "profile_image", "profile_image_url",
+                "hero_description", "availability", "flip_sentences"
+            )
+        }),
+        ("Current Positions / Overview", {
+            "fields": (
+                "company", "company_website",
+                "secondary_job_title", "secondary_job_company", "secondary_job_website"
+            )
+        }),
+        ("Contact", {
+            "fields": (
+                "email", "phone", "secondary_phone", "secondary_phone_label",
+                "location", "pronouns", "website", "timezone"
+            )
+        }),
+        ("Social profiles", {"fields": ("github_username",)}),
+        ("SEO", {"fields": ("seo_keywords",)}),
+        ("Metadata", {"fields": ("created_date", "updated_at")})
+    )
     readonly_fields = ("updated_at",)
 
 

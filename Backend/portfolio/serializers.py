@@ -43,27 +43,67 @@ class ProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="github_username", default="")
     dateCreated = serializers.DateField(source="created_date", allow_null=True, required=False)
 
+    secondary_phone = serializers.CharField(default="")
+    secondary_phone_label = serializers.CharField(default="")
     flipSentences = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
-        fields = ["displayName", "jobTitle", "short_title", "pronouns", "email", "phoneNumber", "website", "address", "username", "availability", "hero_description", "seo_keywords", "timezone", "avatar", "dateCreated", "jobs", "flipSentences"]
-
-    def get_jobs(self, obj):
-        return [
-            {
-                "title": obj.professional_title or "Software Engineer",
-                "company": "SoftZen IT",
-                "website": "https://softzenit.com",
-            },
-            {
-                "title": "Computer Science Student",
-                "company": "Northern University Bangladesh",
-                "website": "https://nub.ac.bd",
-            },
+        fields = [
+            "displayName", "jobTitle", "short_title", "pronouns", "email",
+            "phoneNumber", "secondary_phone", "secondary_phone_label",
+            "website", "address", "username", "availability",
+            "hero_description", "seo_keywords", "timezone", "avatar",
+            "dateCreated", "jobs", "flipSentences"
         ]
 
+    def get_jobs(self, obj):
+        result = []
+        # Primary Job
+        job1_title = getattr(obj, "professional_title", "")
+        job1_company = getattr(obj, "company", "")
+        job1_website = getattr(obj, "company_website", "")
+
+        # Fallback to Experience if company not explicitly specified in Profile
+        if not job1_company:
+            exp = Experience.objects.filter(is_visible=True).order_by("order").first()
+            if exp:
+                job1_company = exp.company
+                job1_title = job1_title or exp.position
+
+        if job1_title or job1_company:
+            result.append({
+                "title": job1_title,
+                "company": job1_company,
+                "website": job1_website,
+            })
+
+        # Secondary Job
+        job2_title = getattr(obj, "secondary_job_title", "")
+        job2_company = getattr(obj, "secondary_job_company", "")
+        job2_website = getattr(obj, "secondary_job_website", "")
+
+        # Fallback to Education or second Experience if not set
+        if not job2_title and not job2_company:
+            edu = Education.objects.filter(is_visible=True).order_by("order").first()
+            if edu:
+                job2_title = edu.degree or "Computer Science Student"
+                job2_company = edu.institution
+                job2_website = "https://nub.ac.bd"
+
+        if job2_title or job2_company:
+            result.append({
+                "title": job2_title,
+                "company": job2_company,
+                "website": job2_website,
+            })
+
+        return result
+
     def get_flipSentences(self, obj):
+        custom = getattr(obj, "flip_sentences", None)
+        if custom and isinstance(custom, list) and len(custom) > 0:
+            return custom
         return [
             obj.professional_title or "Software Engineer",
             "Full Stack Web Developer",
