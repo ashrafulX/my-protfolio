@@ -538,35 +538,35 @@
 }
 
 /* Rich text (WYSIWYG / Quill) typography compatibility */
-[data-slot="prose"] .ql-align-center {
+.prose .ql-align-center, [data-slot="prose"] .ql-align-center {
   text-align: center;
 }
-[data-slot="prose"] .ql-align-right {
+.prose .ql-align-right, [data-slot="prose"] .ql-align-right {
   text-align: right;
 }
-[data-slot="prose"] .ql-align-justify {
+.prose .ql-align-justify, [data-slot="prose"] .ql-align-justify {
   text-align: justify;
 }
-[data-slot="prose"] .ql-size-small {
+.prose .ql-size-small, [data-slot="prose"] .ql-size-small {
   font-size: 0.85em;
 }
-[data-slot="prose"] .ql-size-large {
+.prose .ql-size-large, [data-slot="prose"] .ql-size-large {
   font-size: 1.35em;
 }
-[data-slot="prose"] .ql-size-huge {
+.prose .ql-size-huge, [data-slot="prose"] .ql-size-huge {
   font-size: 1.85em;
 }
-[data-slot="prose"] img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 0.75rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+.prose .ql-font-serif, [data-slot="prose"] .ql-font-serif {
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
 }
-[data-slot="prose"] mark {
+.prose .ql-font-monospace, [data-slot="prose"] .ql-font-monospace {
+  font-family: var(--font-mono), monospace;
+}
+.prose mark, [data-slot="prose"] mark {
   background-color: #fef08a;
   color: #1c1917;
   padding: 0.1em 0.3em;
   border-radius: 0.25rem;
 }
+
 

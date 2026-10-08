@@ -13,6 +13,28 @@
 
     textarea.dataset.quillInitialized = "true";
 
+    // Register style attributors so Quill uses inline CSS styles (16px, font-family, align)
+    try {
+      const Size = window.Quill.import("attributors/style/size");
+      if (Size) {
+        Size.whitelist = ["12px", "14px", "16px", "18px", "20px", "24px", "28px", "32px"];
+        window.Quill.register(Size, true);
+      }
+
+      const Font = window.Quill.import("attributors/style/font");
+      if (Font) {
+        Font.whitelist = ["sans-serif", "serif", "monospace"];
+        window.Quill.register(Font, true);
+      }
+
+      const Align = window.Quill.import("attributors/style/align");
+      if (Align) {
+        window.Quill.register(Align, true);
+      }
+    } catch (err) {
+      console.warn("Error registering Quill attributors:", err);
+    }
+
     // Build the UI containers
     const wrapper = document.createElement("div");
     wrapper.className = "quill-admin-wrapper";
@@ -22,7 +44,7 @@
 
     const badge = document.createElement("div");
     badge.className = "quill-admin-badge";
-    badge.innerHTML = "<span>📝</span><span>Rich Text Editor (MS Word Style)</span>";
+    badge.innerHTML = "<span>📝</span><span>MS Word-Style Article Editor (Format, Size, Colors & Images)</span>";
 
     const actions = document.createElement("div");
     actions.className = "quill-admin-actions";
@@ -31,11 +53,13 @@
     imgUrlBtn.type = "button";
     imgUrlBtn.className = "quill-admin-btn";
     imgUrlBtn.textContent = "🖼️ Insert Image URL";
+    imgUrlBtn.title = "Insert an image directly from a web link";
 
     const toggleModeBtn = document.createElement("button");
     toggleModeBtn.type = "button";
     toggleModeBtn.className = "quill-admin-btn";
     toggleModeBtn.textContent = "💻 Raw HTML / Code";
+    toggleModeBtn.title = "Switch between Visual Word mode and Raw HTML code";
 
     actions.appendChild(imgUrlBtn);
     actions.appendChild(toggleModeBtn);
@@ -45,7 +69,7 @@
     const editorDiv = document.createElement("div");
     editorDiv.id = "quill-content-editor";
 
-    // Insert wrapper in DOM
+    // Insert wrapper in DOM before the textarea
     textarea.parentNode.insertBefore(wrapper, textarea);
     wrapper.appendChild(topbar);
     wrapper.appendChild(editorDiv);
@@ -55,13 +79,14 @@
     textarea.style.display = "none";
     wrapper.appendChild(textarea);
 
-    // Quill toolbar settings
+    // Quill toolbar settings with Font, Header, Size, Formatting, Align, Lists, Images
     const toolbarOptions = [
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      [{ size: ["small", false, "large", "huge"] }],
+      [{ font: ["sans-serif", "serif", "monospace"] }],
+      [{ header: [1, 2, 3, 4, false] }],
+      [{ size: ["12px", "14px", "16px", "18px", "20px", "24px", "28px", "32px"] }],
       ["bold", "italic", "underline", "strike"],
       [{ color: [] }, { background: [] }],
-      [{ align: [] }],
+      [{ align: "" }, { align: "center" }, { align: "right" }, { align: "justify" }],
       [{ list: "ordered" }, { list: "bullet" }],
       [{ indent: "-1" }, { indent: "+1" }],
       ["blockquote", "code-block"],
@@ -77,7 +102,7 @@
           handlers: {
             image: function () {
               const choice = window.prompt(
-                "Paste Image URL (or leave blank to select an image from your computer):"
+                "Insert Image:\n- Paste an Image URL (e.g. Cloudinary, Unsplash, Imgur)\n- OR leave blank and click OK to upload from your computer:"
               );
               if (choice && choice.trim().length > 0) {
                 const range = quill.getSelection(true);
@@ -104,7 +129,7 @@
           },
         },
       },
-      placeholder: "Write your blog post here... (support headings, bold, text color, highlight, normal images, lists, etc.)",
+      placeholder: "Write your article here... Use the toolbar above to set Headings, Font Size, Text Colors, Highlights, and insert Images.",
     });
 
     // Populate initial content
@@ -121,7 +146,38 @@
       textarea.value = quill.root.innerHTML === "<p><br></p>" ? "" : quill.root.innerHTML;
     });
 
-    // Insert Image URL quick button
+    // Add friendly titles/tooltips to toolbar buttons
+    setTimeout(function () {
+      const tooltips = {
+        ".ql-bold": "Bold (Ctrl+B)",
+        ".ql-italic": "Italic (Ctrl+I)",
+        ".ql-underline": "Underline (Ctrl+U)",
+        ".ql-strike": "Strikethrough",
+        ".ql-color": "Text Color",
+        ".ql-background": "Highlight / Background Color",
+        ".ql-align": "Text Alignment",
+        ".ql-list[value='ordered']": "Numbered List",
+        ".ql-list[value='bullet']": "Bullet List",
+        ".ql-indent[value='-1']": "Decrease Indent",
+        ".ql-indent[value='+1']": "Increase Indent",
+        ".ql-blockquote": "Quote Block",
+        ".ql-code-block": "Code Block",
+        ".ql-link": "Insert / Edit Link",
+        ".ql-image": "Insert Image (Upload or URL)",
+        ".ql-video": "Embed Video URL",
+        ".ql-clean": "Clear Formatting",
+        ".ql-header": "Text Heading (H1, H2, H3, H4, Normal)",
+        ".ql-size": "Font Size (12px, 14px, 16px, 18px, 20px, 24px, 32px)",
+        ".ql-font": "Font Family (Sans-serif, Serif, Monospace)",
+      };
+
+      for (const [selector, text] of Object.entries(tooltips)) {
+        const el = wrapper.querySelector(selector);
+        if (el) el.setAttribute("title", text);
+      }
+    }, 200);
+
+    // Insert Image URL quick button in topbar
     imgUrlBtn.addEventListener("click", function (e) {
       e.preventDefault();
       const url = window.prompt("Enter image URL to insert into article:");
@@ -164,7 +220,7 @@
       }
     });
 
-    // Ensure synced on submit
+    // Ensure synced on form submit
     const form = textarea.closest("form");
     if (form) {
       form.addEventListener("submit", function () {

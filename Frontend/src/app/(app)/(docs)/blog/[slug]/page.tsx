@@ -7,7 +7,6 @@ import type { BlogPosting as PageSchema, WithContext } from "schema-dts";
 
 import { Markdown } from "@/components/markdown";
 import { Button } from "@/components/ui/button";
-import { Prose } from "@/components/ui/typography";
 import { SITE_INFO } from "@/config/site";
 import { PostKeyboardShortcuts } from "@/features/blog/components/post-keyboard-shortcuts";
 import { LLMCopyButtonWithViewOptions } from "@/features/blog/components/post-page-actions";
@@ -108,6 +107,11 @@ export default async function Page({
   const allPosts = await getAllPosts();
   const { previous, next } = findNeighbour(allPosts ?? [], slug);
 
+  const cleanedContent = cleanPostContent(post.content, post.metadata.title);
+  const plainOpening = cleanedContent.replace(/<[^>]+>/g, "").trim().toLowerCase();
+  const descSnippet = (post.metadata.description || "").trim().toLowerCase().slice(0, 40);
+  const shouldShowDescription = Boolean(post.metadata.description) && (!descSnippet || !plainOpening.startsWith(descSnippet));
+
   return (
     <>
       <script
@@ -169,16 +173,75 @@ export default async function Page({
         />
       </div>
 
-      <Prose className="px-4">
-        <h1 className="screen-line-after mb-6 font-semibold">
-          {post.metadata.title}
-        </h1>
+      <article className="px-6 md:px-10 py-8 font-sans">
+        <header className="mb-8">
+          <h1 className="text-3xl md:text-[38px] font-bold font-sans tracking-tight text-foreground leading-[1.25] mb-4">
+            {post.metadata.title}
+          </h1>
 
-        <p className="lead mt-6 mb-6">{post.metadata.description}</p>
-        <p className="mb-6 text-sm text-muted-foreground">By {post.metadata.author} · {dayjs(post.metadata.publishedAt || post.metadata.createdAt).format("MMMM D, YYYY")} · {post.metadata.readingTime || 1} min read{post.metadata.category ? ` · ${post.metadata.category}` : ""}{post.metadata.tags.length ? ` · ${post.metadata.tags.join(" · ")}` : ""}</p>
-        {post.metadata.image && <img className="mb-8 aspect-video w-full rounded-xl border border-edge object-cover" src={post.metadata.image} alt={post.metadata.title} />}
-        <Markdown>{post.content}</Markdown>
-      </Prose>
+          {shouldShowDescription && (
+            <p className="text-lg md:text-xl text-muted-foreground/90 font-sans font-normal leading-relaxed mb-5">
+              {post.metadata.description}
+            </p>
+          )}
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 text-sm text-muted-foreground font-sans border-b border-edge/60 pb-5">
+            <span className="font-medium text-foreground">By {post.metadata.author || "Ashraful"}</span>
+            <span>·</span>
+            <span>{dayjs(post.metadata.publishedAt || post.metadata.createdAt).format("MMMM D, YYYY")}</span>
+            <span>·</span>
+            <span>{post.metadata.readingTime || 1} min read</span>
+            {post.metadata.category && (
+              <>
+                <span>·</span>
+                <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
+                  {post.metadata.category}
+                </span>
+              </>
+            )}
+            {post.metadata.tags?.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground"
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+        </header>
+
+        {post.metadata.image && (
+          <div className="my-8 overflow-hidden rounded-2xl border border-edge/80 shadow-xs bg-muted/10">
+            <img
+              className="w-full max-h-[500px] object-cover"
+              src={post.metadata.image}
+              alt={post.metadata.title}
+            />
+          </div>
+        )}
+
+        <div
+          className={cn(
+            "prose prose-zinc dark:prose-invert max-w-none font-sans text-[17px] leading-[1.85] text-foreground/90 tracking-normal",
+            "prose-headings:font-sans prose-headings:font-bold prose-headings:text-foreground prose-headings:tracking-tight",
+            "prose-h1:text-3xl prose-h1:mt-10 prose-h1:mb-4",
+            "prose-h2:text-2xl md:prose-h2:text-[27px] prose-h2:mt-12 prose-h2:mb-4 prose-h2:pt-4 prose-h2:border-t prose-h2:border-edge/30",
+            "prose-h3:text-xl md:prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-3",
+            "prose-h4:text-lg prose-h4:mt-6 prose-h4:mb-2",
+            "prose-p:my-5 prose-p:leading-[1.85]",
+            "prose-a:text-primary prose-a:font-medium prose-a:underline prose-a:underline-offset-4 prose-a:decoration-primary/40 hover:prose-a:decoration-primary",
+            "prose-strong:font-semibold prose-strong:text-foreground",
+            "prose-ul:my-5 prose-ul:pl-6 prose-ul:list-disc prose-ul:space-y-2",
+            "prose-ol:my-5 prose-ol:pl-6 prose-ol:list-decimal prose-ol:space-y-2",
+            "prose-li:leading-relaxed",
+            "prose-blockquote:my-8 prose-blockquote:pl-5 prose-blockquote:border-l-4 prose-blockquote:border-primary/60 prose-blockquote:italic prose-blockquote:text-muted-foreground",
+            "prose-img:rounded-xl prose-img:border prose-img:border-edge/80 prose-img:shadow-xs prose-img:my-8 prose-img:mx-auto prose-img:block",
+            "prose-code:font-mono prose-code:rounded-md prose-code:border prose-code:bg-muted/50 prose-code:px-[0.35rem] prose-code:py-[0.2rem] prose-code:text-[0.9em] prose-code:font-normal prose-code:before:content-none prose-code:after:content-none"
+          )}
+        >
+          <Markdown>{cleanedContent}</Markdown>
+        </div>
+      </article>
 
       <div className="screen-line-before h-4 w-full" />
     </>
@@ -188,3 +251,17 @@ export default async function Page({
 function getPostUrl(post: Post) {
   return `/blog/${post.slug}`;
 }
+
+function cleanPostContent(content: string, title: string) {
+  let cleaned = (content || "").trim();
+  const h1Match = cleaned.match(/^<h1[^>]*>(.*?)<\/h1>/i);
+  if (h1Match) {
+    const h1Text = h1Match[1].replace(/<[^>]+>/g, "").trim().toLowerCase();
+    const cleanTitle = title.trim().toLowerCase();
+    if (h1Text === cleanTitle || cleanTitle.includes(h1Text) || h1Text.includes(cleanTitle)) {
+      cleaned = cleaned.substring(h1Match[0].length).trim();
+    }
+  }
+  return cleaned;
+}
+

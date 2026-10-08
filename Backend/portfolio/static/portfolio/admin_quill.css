@@ -3,31 +3,36 @@
 .quill-admin-wrapper {
   margin-top: 8px;
   width: 100%;
-  max-width: 1050px;
+  max-width: 1100px;
   box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .quill-admin-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 12px;
-  background: var(--darkened-bg, #e9ecef);
-  border: 1px solid var(--border-color, #ccc);
+  padding: 8px 14px;
+  background: var(--darkened-bg, #f1f3f5);
+  border: 1px solid var(--border-color, #d1d5db);
   border-bottom: none;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-  font-size: 12px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--body-fg, #333);
+  color: var(--body-fg, #1f2937);
 }
 
 .quill-admin-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-weight: 600;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
+}
+
+.quill-admin-badge span:first-child {
+  font-size: 16px;
 }
 
 .quill-admin-actions {
@@ -37,129 +42,314 @@
 }
 
 .quill-admin-btn {
-  background: var(--body-bg, #fff);
-  color: var(--body-fg, #222);
-  border: 1px solid var(--border-color, #ccc);
-  border-radius: 4px;
-  padding: 3px 10px;
-  font-size: 11px;
+  background: var(--body-bg, #ffffff);
+  color: var(--body-fg, #374151);
+  border: 1px solid var(--border-color, #d1d5db);
+  border-radius: 5px;
+  padding: 4px 12px;
+  font-size: 12px;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
   font-weight: 500;
 }
 
 .quill-admin-btn:hover {
-  background: var(--primary, #417690);
-  color: #fff;
-  border-color: var(--primary, #417690);
+  background: var(--primary, #2563eb);
+  color: #ffffff;
+  border-color: var(--primary, #2563eb);
 }
 
+/* Quill Toolbar customization */
 .quill-admin-wrapper .ql-toolbar.ql-snow {
   background: var(--darkened-bg, #f8f9fa);
-  border: 1px solid var(--border-color, #ccc);
-  border-top: none;
-  padding: 8px 10px;
+  border: 1px solid var(--border-color, #d1d5db);
+  border-top: 1px solid var(--border-color, #e5e7eb);
+  padding: 10px 12px;
   font-family: inherit;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
 }
 
+.quill-admin-wrapper .ql-toolbar.ql-snow .ql-formats {
+  margin-right: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* Picker Dropdowns Width & Labels */
+.quill-admin-wrapper .ql-snow .ql-picker {
+  height: 30px;
+  border: 1px solid var(--border-color, #d1d5db);
+  border-radius: 4px;
+  background: var(--body-bg, #ffffff);
+}
+
+/* Header (Paragraph / Heading) Picker */
+.quill-admin-wrapper .ql-snow .ql-picker.ql-header {
+  width: 155px !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-header .ql-picker-label::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-header .ql-picker-item::before {
+  content: 'Normal Paragraph' !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="1"]::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
+  content: 'Heading 1 (H1)' !important;
+  font-size: 18px !important;
+  font-weight: bold !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="2"]::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
+  content: 'Heading 2 (H2)' !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
+  content: 'Heading 3 (H3)' !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="4"]::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
+  content: 'Heading 4 (H4)' !important;
+  font-size: 13px !important;
+  font-weight: bold !important;
+}
+
+/* Font Size Picker */
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size {
+  width: 135px !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-item::before {
+  content: '16px (Normal)' !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="12px"]::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before {
+  content: '12px (Small)' !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="14px"]::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before {
+  content: '14px' !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="16px"]::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before {
+  content: '16px (Normal)' !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="18px"]::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before {
+  content: '18px (Medium)' !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="20px"]::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before {
+  content: '20px (Large)' !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="24px"]::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="24px"]::before {
+  content: '24px (X-Large)' !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="28px"]::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="28px"]::before {
+  content: '28px (Title)' !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="32px"]::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="32px"]::before {
+  content: '32px (Huge)' !important;
+}
+
+/* Font Family Picker */
+.quill-admin-wrapper .ql-snow .ql-picker.ql-font {
+  width: 130px !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-font .ql-picker-label::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-font .ql-picker-item::before {
+  content: 'Sans-Serif' !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="serif"]::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="serif"]::before {
+  content: 'Serif (Book)' !important;
+  font-family: Georgia, serif !important;
+}
+.quill-admin-wrapper .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="monospace"]::before,
+.quill-admin-wrapper .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before {
+  content: 'Monospace' !important;
+  font-family: monospace !important;
+}
+
+/* Dropdown Options Popup */
+.quill-admin-wrapper .ql-snow .ql-picker-options {
+  background-color: var(--body-bg, #ffffff) !important;
+  border: 1px solid var(--border-color, #d1d5db) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 6px !important;
+  padding: 6px 0 !important;
+  z-index: 100 !important;
+}
+
+.quill-admin-wrapper .ql-snow .ql-picker-item {
+  padding: 5px 12px !important;
+  color: var(--body-fg, #374151) !important;
+  cursor: pointer;
+}
+
+.quill-admin-wrapper .ql-snow .ql-picker-item:hover {
+  background-color: var(--primary, #2563eb) !important;
+  color: #ffffff !important;
+}
+
+/* Toolbar Buttons */
+.quill-admin-wrapper .ql-toolbar.ql-snow button {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+}
+
+.quill-admin-wrapper .ql-toolbar.ql-snow button:hover,
+.quill-admin-wrapper .ql-toolbar.ql-snow button.ql-active {
+  background: rgba(37, 99, 235, 0.12);
+  color: var(--primary, #2563eb);
+}
+
+/* Quill Editor Area */
 .quill-admin-wrapper .ql-container.ql-snow {
   background: var(--body-bg, #ffffff);
-  color: var(--body-fg, #1e293b);
-  border: 1px solid var(--border-color, #ccc);
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  min-height: 420px;
+  color: var(--body-fg, #111827);
+  border: 1px solid var(--border-color, #d1d5db);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  min-height: 480px;
 }
 
 .quill-admin-wrapper .ql-editor {
-  min-height: 420px;
-  padding: 16px 20px;
-  line-height: 1.75;
+  min-height: 480px;
+  padding: 24px 28px;
+  line-height: 1.8;
 }
 
 .quill-admin-wrapper .ql-editor p {
-  margin-bottom: 0.85em;
+  margin-bottom: 1.1em;
 }
 
-.quill-admin-wrapper .ql-editor h1,
-.quill-admin-wrapper .ql-editor h2,
-.quill-admin-wrapper .ql-editor h3,
-.quill-admin-wrapper .ql-editor h4 {
+.quill-admin-wrapper .ql-editor h1 {
+  font-size: 2em;
+  font-weight: 700;
+  margin-top: 1.3em;
+  margin-bottom: 0.5em;
+  line-height: 1.25;
+}
+
+.quill-admin-wrapper .ql-editor h2 {
+  font-size: 1.55em;
   font-weight: 700;
   margin-top: 1.2em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.45em;
+  line-height: 1.3;
+}
+
+.quill-admin-wrapper .ql-editor h3 {
+  font-size: 1.25em;
+  font-weight: 600;
+  margin-top: 1.1em;
+  margin-bottom: 0.4em;
+  line-height: 1.35;
+}
+
+.quill-admin-wrapper .ql-editor h4 {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin-top: 1em;
+  margin-bottom: 0.35em;
 }
 
 .quill-admin-wrapper .ql-editor img {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
-  display: inline-block;
-  margin: 10px 0;
-}
-
-.quill-admin-wrapper .ql-editor pre.ql-syntax {
-  background: #1e1e1e;
-  color: #d4d4d4;
-  border-radius: 6px;
-  padding: 12px;
-  font-size: 13px;
+  display: block;
+  margin: 16px auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .quill-admin-wrapper .ql-editor blockquote {
-  border-left: 4px solid var(--primary, #417690);
-  padding-left: 14px;
-  margin-left: 0;
+  border-left: 4px solid var(--primary, #2563eb);
+  padding-left: 16px;
+  margin: 16px 0;
   font-style: italic;
-  opacity: 0.9;
+  color: #6b7280;
+}
+
+.quill-admin-wrapper .ql-editor pre.ql-syntax {
+  background: #18181b;
+  color: #f4f4f5;
+  border-radius: 8px;
+  padding: 14px 18px;
+  font-size: 14px;
+  font-family: monospace;
 }
 
 /* Raw mode textarea */
 .quill-raw-textarea {
   width: 100%;
-  min-height: 420px;
-  padding: 14px;
+  min-height: 480px;
+  padding: 18px;
   font-family: "Courier New", Courier, monospace;
   font-size: 14px;
   line-height: 1.6;
-  border: 1px solid var(--border-color, #ccc);
-  border-radius: 0 0 6px 6px;
-  background: var(--body-bg, #fff);
-  color: var(--body-fg, #222);
+  border: 1px solid var(--border-color, #d1d5db);
+  border-radius: 0 0 8px 8px;
+  background: var(--body-bg, #ffffff);
+  color: var(--body-fg, #111827);
   box-sizing: border-box;
 }
 
 /* Dark mode compatibility */
 @media (prefers-color-scheme: dark) {
   .quill-admin-wrapper .ql-snow .ql-stroke {
-    stroke: var(--body-fg, #e2e8f0) !important;
+    stroke: var(--body-fg, #e5e7eb) !important;
   }
   .quill-admin-wrapper .ql-snow .ql-fill {
-    fill: var(--body-fg, #e2e8f0) !important;
+    fill: var(--body-fg, #e5e7eb) !important;
   }
   .quill-admin-wrapper .ql-snow .ql-picker {
-    color: var(--body-fg, #e2e8f0) !important;
+    color: var(--body-fg, #e5e7eb) !important;
+    background: var(--darkened-bg, #1f2937) !important;
+    border-color: var(--border-color, #374151) !important;
   }
   .quill-admin-wrapper .ql-snow .ql-picker-options {
-    background-color: var(--darkened-bg, #1e2227) !important;
-    border-color: var(--border-color, #444) !important;
-    color: var(--body-fg, #e2e8f0) !important;
+    background-color: var(--darkened-bg, #1f2937) !important;
+    border-color: var(--border-color, #374151) !important;
+    color: var(--body-fg, #e5e7eb) !important;
+  }
+  .quill-admin-wrapper .ql-snow .ql-picker-item {
+    color: var(--body-fg, #e5e7eb) !important;
+  }
+  .quill-admin-wrapper .ql-editor blockquote {
+    color: #9ca3af;
   }
 }
 
 [data-theme="dark"] .quill-admin-wrapper .ql-snow .ql-stroke {
-  stroke: var(--body-fg, #e2e8f0) !important;
+  stroke: var(--body-fg, #e5e7eb) !important;
 }
 [data-theme="dark"] .quill-admin-wrapper .ql-snow .ql-fill {
-  fill: var(--body-fg, #e2e8f0) !important;
+  fill: var(--body-fg, #e5e7eb) !important;
 }
 [data-theme="dark"] .quill-admin-wrapper .ql-snow .ql-picker {
-  color: var(--body-fg, #e2e8f0) !important;
+  color: var(--body-fg, #e5e7eb) !important;
+  background: var(--darkened-bg, #1f2937) !important;
+  border-color: var(--border-color, #374151) !important;
 }
 [data-theme="dark"] .quill-admin-wrapper .ql-snow .ql-picker-options {
-  background-color: var(--darkened-bg, #1e2227) !important;
-  border-color: var(--border-color, #444) !important;
-  color: var(--body-fg, #e2e8f0) !important;
+  background-color: var(--darkened-bg, #1f2937) !important;
+  border-color: var(--border-color, #374151) !important;
+  color: var(--body-fg, #e5e7eb) !important;
+}
+[data-theme="dark"] .quill-admin-wrapper .ql-snow .ql-picker-item {
+  color: var(--body-fg, #e5e7eb) !important;
 }
