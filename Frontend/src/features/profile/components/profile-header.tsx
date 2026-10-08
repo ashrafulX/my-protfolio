@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { FlipSentences } from "@/registry/flip-sentences";
 
 import { ProfileAvatar } from "./profile-avatar";
-import { PronounceMyName } from "./pronounce-my-name";
 import { VerifiedIcon } from "./verified-icon";
 
 export async function ProfileHeader() {
@@ -40,10 +39,9 @@ export async function ProfileHeader() {
         </div>
 
         <div className="border-t border-edge">
-          <h1 className="flex items-center gap-2 pl-4 text-3xl font-semibold">
+          <h1 className="flex items-center gap-2 pl-4 font-sans text-[30px] leading-[36px] font-semibold text-foreground">
             <span>{profile.displayName}</span>
             <VerifiedIcon className="size-[0.65em] text-[#0095f6]" aria-label="Verified profile" />
-            <PronounceMyName namePronunciationUrl="/audio/ui-sounds/unlock.wav" />
           </h1>
 
           <div className="h-12 border-t border-edge py-1 pl-4 sm:h-auto">
