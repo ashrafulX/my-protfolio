@@ -8,8 +8,13 @@ import { VerifiedIcon } from "./verified-icon";
 
 export async function ProfileHeader() {
   const apiProfile = await cmsGet<CmsProfile>("profile/");
+  const displayName =
+    apiProfile?.displayName && apiProfile.displayName.trim().toUpperCase() !== "ASHRAFUL ISLAM"
+      ? apiProfile.displayName
+      : "Md. Ashraful Islam";
+
   const profile = {
-    displayName: apiProfile?.displayName || "Md. Ashraful Islam",
+    displayName,
     jobTitle: apiProfile?.jobTitle || "Backend Developer",
     avatar: apiProfile?.avatar || "/images/profile/avatar.jpg",
     flipSentences: apiProfile?.flipSentences?.length

@@ -59,9 +59,25 @@ export async function Overview() {
   const profile: CmsProfile = {
     ...DEFAULT_PROFILE,
     ...(apiProfile || {}),
-    jobs: (apiProfile?.jobs && apiProfile.jobs.length > 0)
-      ? apiProfile.jobs
-      : DEFAULT_PROFILE.jobs,
+    pronouns: apiProfile?.pronouns || DEFAULT_PROFILE.pronouns,
+    timezone: apiProfile?.timezone || DEFAULT_PROFILE.timezone,
+    phoneNumber: apiProfile?.phoneNumber || DEFAULT_PROFILE.phoneNumber,
+    secondary_phone: apiProfile?.secondary_phone || DEFAULT_PROFILE.secondary_phone,
+    secondary_phone_label: apiProfile?.secondary_phone_label || DEFAULT_PROFILE.secondary_phone_label,
+    website: (apiProfile?.website && !apiProfile.website.includes("historoam")) ? apiProfile.website : DEFAULT_PROFILE.website,
+    address: apiProfile?.address || DEFAULT_PROFILE.address,
+    email: apiProfile?.email || DEFAULT_PROFILE.email,
+    jobs: (apiProfile?.jobs && apiProfile.jobs.length >= 2)
+      ? [
+          apiProfile.jobs[0],
+          {
+            ...apiProfile.jobs[1],
+            title: apiProfile.jobs[1].title === "Bachelor's degree" ? "Computer Science Student" : apiProfile.jobs[1].title,
+          }
+        ]
+      : (apiProfile?.jobs && apiProfile.jobs.length === 1)
+        ? [apiProfile.jobs[0], DEFAULT_PROFILE.jobs[1]]
+        : DEFAULT_PROFILE.jobs,
   };
 
   const primaryJob = profile.jobs?.[0] || DEFAULT_PROFILE.jobs[0];

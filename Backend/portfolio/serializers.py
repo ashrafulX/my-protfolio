@@ -33,15 +33,17 @@ def media_or_url(request, field, fallback=""):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    displayName = serializers.CharField(source="name", default="")
+    displayName = serializers.SerializerMethodField()
     jobTitle = serializers.CharField(source="professional_title", default="")
     jobs = serializers.SerializerMethodField()
     avatar = serializers.SerializerMethodField()
-    phoneNumber = serializers.CharField(source="phone", default="")
-    website = serializers.CharField(default="")
+    phoneNumber = serializers.SerializerMethodField()
+    website = serializers.SerializerMethodField()
     address = serializers.CharField(source="location", default="")
     username = serializers.CharField(source="github_username", default="")
     dateCreated = serializers.DateField(source="created_date", allow_null=True, required=False)
+    pronouns = serializers.SerializerMethodField()
+    timezone = serializers.SerializerMethodField()
 
     secondary_phone = serializers.SerializerMethodField()
     secondary_phone_label = serializers.SerializerMethodField()
@@ -56,6 +58,35 @@ class ProfileSerializer(serializers.ModelSerializer):
             "hero_description", "seo_keywords", "timezone", "avatar",
             "dateCreated", "jobs", "flipSentences"
         ]
+
+    def get_displayName(self, obj):
+        name = getattr(obj, "name", "") or ""
+        if not name or name.strip().upper() in ["ASHRAFUL ISLAM", "ASHRAFUL"]:
+            return "Md. Ashraful Islam"
+        return name
+
+    def get_pronouns(self, obj):
+        val = getattr(obj, "pronouns", "")
+        return val if val else "he/him"
+
+    def get_timezone(self, obj):
+        val = getattr(obj, "timezone", "")
+        return val if val else "Asia/Dhaka"
+
+    def get_website(self, obj):
+        val = getattr(obj, "website", "")
+        if not val or "historoam" in val.lower():
+            return "https://ashraful.site"
+        return val
+
+    def get_phoneNumber(self, obj):
+        val = getattr(obj, "phone", "")
+        if val:
+            clean = val.replace(" ", "").replace("-", "")
+            if clean == "+8801590026285":
+                return "+880 1590 026285"
+            return val
+        return "+880 1590 026285"
 
     def get_jobs(self, obj):
         result = []
@@ -79,7 +110,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         except Exception:
             edu = None
 
-        job2_title = (edu.degree if edu and edu.degree else "Computer Science Student")
+        job2_title = "Computer Science Student"
         job2_company = (edu.institution if edu and edu.institution else "Northern University Bangladesh")
         job2_website = "https://nub.ac.bd"
 
@@ -92,14 +123,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         return result
 
     def get_secondary_phone(self, obj):
-        try:
-            whatsapp = SocialLink.objects.filter(is_visible=True, platform__icontains="whatsapp").first()
-            if whatsapp and whatsapp.url:
-                clean = whatsapp.url.replace("https://wa.me/", "").replace("https://api.whatsapp.com/send?phone=", "").replace("tel:", "").strip()
-                return clean if clean.startswith("+") else f"+{clean}"
-        except Exception:
-            pass
-        return obj.phone or "+880 1590 026285"
+        return "+880 1590 026285"
 
     def get_secondary_phone_label(self, obj):
         return "WhatsApp"
