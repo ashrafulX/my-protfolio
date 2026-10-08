@@ -14,9 +14,9 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     description: profile?.hero_description || SITE_INFO.description,
     icons: [
       {
-        src: "/images/brand/favicon.jpeg",
-        type: "image/svg+xml",
-        sizes: "any",
+        src: "/favicon.png",
+        type: "image/png",
+        sizes: "192x192",
         purpose: "any",
       },
       {

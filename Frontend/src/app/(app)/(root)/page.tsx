@@ -78,6 +78,12 @@ export default async function Page() {
 }
 
 function getPageJsonLd(profile: CmsProfile | null): WithContext<PageSchema> {
+  const displayName = profile?.displayName || "Md. Ashraful Islam";
+  const baseUrl = "https://ashrafulx.vercel.app";
+  const image = profile?.avatar
+    ? (profile.avatar.startsWith("http") ? profile.avatar : `${baseUrl}${profile.avatar}`)
+    : `${baseUrl}/images/profile/avatar.jpg`;
+
   return {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
@@ -85,9 +91,17 @@ function getPageJsonLd(profile: CmsProfile | null): WithContext<PageSchema> {
     dateModified: dayjs().toISOString(),
     mainEntity: {
       "@type": "Person",
-      name: profile?.displayName || "",
-      identifier: profile?.username || "",
-      image: profile?.avatar || "",
+      name: displayName,
+      identifier: profile?.username || "ashrafulx",
+      image,
+      jobTitle: profile?.jobTitle || "Backend Developer & Software Engineer",
+      url: baseUrl,
+      sameAs: [
+        "https://github.com/ashrafulx",
+        "https://linkedin.com/in/ashrafulx",
+        "https://codeforces.com/profile/iashraf",
+        "https://leetcode.com/u/ashrafulx/",
+      ],
     },
   };
 }

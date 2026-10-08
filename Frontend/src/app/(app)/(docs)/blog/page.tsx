@@ -7,7 +7,16 @@ export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "A collection of articles on development, design, and ideas.",
+  description: "Articles, tutorials, and engineering notes on software development, Django, React, algorithms, and system design by Md. Ashraful Islam.",
+  alternates: {
+    canonical: "/blog",
+  },
+  openGraph: {
+    title: "Blog — Md. Ashraful Islam",
+    description: "Articles, tutorials, and engineering notes on software development, Django, React, algorithms, and system design by Md. Ashraful Islam.",
+    url: "/blog",
+    type: "website",
+  },
 };
 
 export default async function Page() {

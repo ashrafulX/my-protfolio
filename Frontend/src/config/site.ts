@@ -1,9 +1,28 @@
 import type { NavItem } from "@/types/nav";
 
 export const SITE_INFO = {
-  name: "Portfolio",
-  url: process.env.APP_URL || process.env.NEXT_PUBLIC_SITE_URL || "https://ashraful.site",
-  description: "Portfolio website",
+  name: "Md. Ashraful Islam — Backend Developer & Software Engineer",
+  shortName: "Md. Ashraful Islam",
+  url: process.env.APP_URL || process.env.NEXT_PUBLIC_SITE_URL || "https://ashrafulx.vercel.app",
+  backendUrl: process.env.NEXT_PUBLIC_API_URL || "https://ashrafulx-server.vercel.app/api",
+  description:
+    "Official portfolio of Md. Ashraful Islam — Backend Developer, Software Engineer, and Competitive Programmer specializing in Django, React, PostgreSQL, and scalable systems.",
+  keywords: [
+    "Md. Ashraful Islam",
+    "Ashraful Islam",
+    "ashrafulx",
+    "Backend Developer",
+    "Software Engineer",
+    "Full Stack Developer",
+    "Django Developer",
+    "React Developer",
+    "Python Developer",
+    "Competitive Programmer",
+    "Northern University Bangladesh",
+    "SoftZen IT",
+    "Portfolio",
+    "Dhaka Bangladesh",
+  ],
 };
 
 export const META_THEME_COLORS = {
