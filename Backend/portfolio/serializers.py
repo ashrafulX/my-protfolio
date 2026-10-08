@@ -123,7 +123,21 @@ class ProfileSerializer(serializers.ModelSerializer):
         return result
 
     def get_secondary_phone(self, obj):
-        return "+880 1590 026285"
+        try:
+            whatsapp = SocialLink.objects.filter(is_visible=True, platform__icontains="whatsapp").first()
+            if whatsapp and whatsapp.url:
+                clean = (
+                    whatsapp.url
+                    .replace("https://wa.me/", "")
+                    .replace("https://api.whatsapp.com/send?phone=", "")
+                    .replace("tel:", "")
+                    .strip()
+                )
+                if clean:
+                    return clean if clean.startswith("+") else f"+{clean}"
+        except Exception:
+            pass
+        return self.get_phoneNumber(obj)
 
     def get_secondary_phone_label(self, obj):
         return "WhatsApp"

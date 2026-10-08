@@ -64,7 +64,7 @@ export async function Overview() {
     phoneNumber: apiProfile?.phoneNumber || DEFAULT_PROFILE.phoneNumber,
     secondary_phone: apiProfile?.secondary_phone || DEFAULT_PROFILE.secondary_phone,
     secondary_phone_label: apiProfile?.secondary_phone_label || DEFAULT_PROFILE.secondary_phone_label,
-    website: (apiProfile?.website && !apiProfile.website.includes("historoam")) ? apiProfile.website : DEFAULT_PROFILE.website,
+    website: apiProfile?.website || DEFAULT_PROFILE.website,
     address: apiProfile?.address || DEFAULT_PROFILE.address,
     email: apiProfile?.email || DEFAULT_PROFILE.email,
     jobs: (apiProfile?.jobs && apiProfile.jobs.length >= 2)
