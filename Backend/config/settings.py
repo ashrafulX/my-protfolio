@@ -86,6 +86,11 @@ POSTGRES_USER = os.getenv("POSTGRES_USER")
 POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
 POSTGRES_HOST = os.getenv("POSTGRES_HOST")
 POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5432")
+if "pooler.supabase.com" in (POSTGRES_HOST or "") and str(POSTGRES_PORT).strip() == "5432":
+    POSTGRES_PORT = os.getenv("POSTGRES_PORT_OVERRIDE", "6543")
+
+
+
 
 missing_database_settings = [
     name
