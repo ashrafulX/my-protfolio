@@ -283,7 +283,8 @@ class BlogPost(models.Model):
         if self.status == self.Status.PUBLISHED and not self.published_at:
             self.published_at = timezone.now()
         if self.content:
-            self.reading_time = max(1, math.ceil(len(re.findall(r"\w+", self.content)) / 200))
+            plain_text = re.sub(r"<[^>]+>", " ", self.content)
+            self.reading_time = max(1, math.ceil(len(re.findall(r"\w+", plain_text)) / 200))
         super().save(*args, **kwargs)
 
     def __str__(self):

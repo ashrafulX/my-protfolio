@@ -163,7 +163,7 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [image],
     },
     verification: {
-      google: process.env.GOOGLE_SITE_VERIFICATION,
+      google: process.env.GOOGLE_SITE_VERIFICATION || "CuaIw6VOBCFNiu7V5dos0qx6mlVOtjt9qNIeNfhW64o",
     },
     icons: {
       icon: [
@@ -191,6 +191,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${fontSans.variable} ${fontMono.variable}`} suppressHydrationWarning>
       <head>
+        <meta
+          name="google-site-verification"
+          content={process.env.GOOGLE_SITE_VERIFICATION || "CuaIw6VOBCFNiu7V5dos0qx6mlVOtjt9qNIeNfhW64o"}
+        />
         <script type="text/javascript" dangerouslySetInnerHTML={{ __html: darkModeScript }} />
         <script
           type="application/ld+json"

@@ -1,0 +1,165 @@
+/* Django Admin Quill WYSIWYG Editor Styles */
+
+.quill-admin-wrapper {
+  margin-top: 8px;
+  width: 100%;
+  max-width: 1050px;
+  box-sizing: border-box;
+}
+
+.quill-admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: var(--darkened-bg, #e9ecef);
+  border: 1px solid var(--border-color, #ccc);
+  border-bottom: none;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--body-fg, #333);
+}
+
+.quill-admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.quill-admin-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quill-admin-btn {
+  background: var(--body-bg, #fff);
+  color: var(--body-fg, #222);
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  font-weight: 500;
+}
+
+.quill-admin-btn:hover {
+  background: var(--primary, #417690);
+  color: #fff;
+  border-color: var(--primary, #417690);
+}
+
+.quill-admin-wrapper .ql-toolbar.ql-snow {
+  background: var(--darkened-bg, #f8f9fa);
+  border: 1px solid var(--border-color, #ccc);
+  border-top: none;
+  padding: 8px 10px;
+  font-family: inherit;
+}
+
+.quill-admin-wrapper .ql-container.ql-snow {
+  background: var(--body-bg, #ffffff);
+  color: var(--body-fg, #1e293b);
+  border: 1px solid var(--border-color, #ccc);
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  min-height: 420px;
+}
+
+.quill-admin-wrapper .ql-editor {
+  min-height: 420px;
+  padding: 16px 20px;
+  line-height: 1.75;
+}
+
+.quill-admin-wrapper .ql-editor p {
+  margin-bottom: 0.85em;
+}
+
+.quill-admin-wrapper .ql-editor h1,
+.quill-admin-wrapper .ql-editor h2,
+.quill-admin-wrapper .ql-editor h3,
+.quill-admin-wrapper .ql-editor h4 {
+  font-weight: 700;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+.quill-admin-wrapper .ql-editor img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: inline-block;
+  margin: 10px 0;
+}
+
+.quill-admin-wrapper .ql-editor pre.ql-syntax {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 13px;
+}
+
+.quill-admin-wrapper .ql-editor blockquote {
+  border-left: 4px solid var(--primary, #417690);
+  padding-left: 14px;
+  margin-left: 0;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* Raw mode textarea */
+.quill-raw-textarea {
+  width: 100%;
+  min-height: 420px;
+  padding: 14px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 0 0 6px 6px;
+  background: var(--body-bg, #fff);
+  color: var(--body-fg, #222);
+  box-sizing: border-box;
+}
+
+/* Dark mode compatibility */
+@media (prefers-color-scheme: dark) {
+  .quill-admin-wrapper .ql-snow .ql-stroke {
+    stroke: var(--body-fg, #e2e8f0) !important;
+  }
+  .quill-admin-wrapper .ql-snow .ql-fill {
+    fill: var(--body-fg, #e2e8f0) !important;
+  }
+  .quill-admin-wrapper .ql-snow .ql-picker {
+    color: var(--body-fg, #e2e8f0) !important;
+  }
+  .quill-admin-wrapper .ql-snow .ql-picker-options {
+    background-color: var(--darkened-bg, #1e2227) !important;
+    border-color: var(--border-color, #444) !important;
+    color: var(--body-fg, #e2e8f0) !important;
+  }
+}
+
+[data-theme="dark"] .quill-admin-wrapper .ql-snow .ql-stroke {
+  stroke: var(--body-fg, #e2e8f0) !important;
+}
+[data-theme="dark"] .quill-admin-wrapper .ql-snow .ql-fill {
+  fill: var(--body-fg, #e2e8f0) !important;
+}
+[data-theme="dark"] .quill-admin-wrapper .ql-snow .ql-picker {
+  color: var(--body-fg, #e2e8f0) !important;
+}
+[data-theme="dark"] .quill-admin-wrapper .ql-snow .ql-picker-options {
+  background-color: var(--darkened-bg, #1e2227) !important;
+  border-color: var(--border-color, #444) !important;
+  color: var(--body-fg, #e2e8f0) !important;
+}

@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 
 from .models import AboutSection, Achievement, BlogPost, Category, Certification, Education, Experience, Profile, Project, Research, Resume, Skill, SocialLink, Tag
@@ -130,8 +131,27 @@ def unpublish_posts(modeladmin, request, queryset):
     queryset.update(status=BlogPost.Status.DRAFT)
 
 
+class BlogPostAdminForm(forms.ModelForm):
+    content = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                "class": "quill-editor-field",
+                "rows": 18,
+                "placeholder": "Write your post with MS Word-like formatting (Headings, bold, colors, highlights, images, etc.)...",
+            }
+        ),
+        required=False,
+        help_text="WYSIWYG editor enabled. You can format text with headings, bold, text color, highlight color, inline images, lists, and links.",
+    )
+
+    class Meta:
+        model = BlogPost
+        fields = "__all__"
+
+
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
+    form = BlogPostAdminForm
     list_display = ("title", "author", "category", "status", "published_at", "reading_time", "is_featured")
     list_filter = ("status", "category", "is_featured", "published_at")
     search_fields = ("title", "excerpt", "content", "author")
@@ -140,5 +160,22 @@ class BlogPostAdmin(admin.ModelAdmin):
     date_hierarchy = "published_at"
     ordering = ("-published_at", "-created_at")
     actions = (publish_posts, unpublish_posts)
-    fieldsets = (("Post", {"fields": ("title", "slug", "excerpt", "content", "featured_image")}), ("Organization", {"fields": ("author", "category", "tags", "is_featured")}), ("Publication", {"fields": ("status", "published_at", "reading_time")}))
+    fieldsets = (
+        ("Post Content", {"fields": ("title", "slug", "excerpt", "content", "featured_image")}),
+        ("Organization", {"fields": ("author", "category", "tags", "is_featured")}),
+        ("Publication", {"fields": ("status", "published_at", "reading_time")}),
+    )
     readonly_fields = ("reading_time",)
+
+    class Media:
+        css = {
+            "all": (
+                "https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css",
+                "portfolio/admin_quill.css",
+            )
+        }
+        js = (
+            "https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js",
+            "portfolio/admin_quill.js",
+        )
+

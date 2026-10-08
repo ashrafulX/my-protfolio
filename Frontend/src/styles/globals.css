@@ -536,3 +536,37 @@
     calc(100% - var(--scroll-buffer)) 100%;
   animation-fill-mode: both;
 }
+
+/* Rich text (WYSIWYG / Quill) typography compatibility */
+[data-slot="prose"] .ql-align-center {
+  text-align: center;
+}
+[data-slot="prose"] .ql-align-right {
+  text-align: right;
+}
+[data-slot="prose"] .ql-align-justify {
+  text-align: justify;
+}
+[data-slot="prose"] .ql-size-small {
+  font-size: 0.85em;
+}
+[data-slot="prose"] .ql-size-large {
+  font-size: 1.35em;
+}
+[data-slot="prose"] .ql-size-huge {
+  font-size: 1.85em;
+}
+[data-slot="prose"] img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+[data-slot="prose"] mark {
+  background-color: #fef08a;
+  color: #1c1917;
+  padding: 0.1em 0.3em;
+  border-radius: 0.25rem;
+}
+
