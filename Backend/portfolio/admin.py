@@ -4,8 +4,19 @@ from django.contrib import admin
 from .models import AboutSection, Achievement, BlogPost, Category, Certification, Education, Experience, Profile, Project, Research, Resume, Skill, SocialLink, Tag
 
 
+class ProfileAdminForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = "__all__"
+
+    def clean_profile_image(self):
+        val = self.cleaned_data.get("profile_image")
+        return val if val else None
+
+
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
+    form = ProfileAdminForm
     list_display = ("name", "professional_title", "email", "location", "updated_at")
     search_fields = ("name", "email", "github_username")
     fieldsets = (
@@ -36,8 +47,23 @@ class AboutAdmin(admin.ModelAdmin):
     readonly_fields = ("updated_at",)
 
 
+class ProjectAdminForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = "__all__"
+
+    def clean_logo_image(self):
+        val = self.cleaned_data.get("logo_image")
+        return val if val else None
+
+    def clean_featured_image(self):
+        val = self.cleaned_data.get("featured_image")
+        return val if val else None
+
+
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
+    form = ProjectAdminForm
     list_display = ("title", "is_featured", "is_published", "order", "updated_at")
     list_filter = ("is_featured", "is_published")
     search_fields = ("title", "short_description", "full_description")
@@ -62,8 +88,19 @@ class EducationAdmin(admin.ModelAdmin):
     ordering = ("order", "-start_date")
 
 
+class SkillAdminForm(forms.ModelForm):
+    class Meta:
+        model = Skill
+        fields = "__all__"
+
+    def clean_icon(self):
+        val = self.cleaned_data.get("icon")
+        return val if val else None
+
+
 @admin.register(Skill)
 class SkillAdmin(admin.ModelAdmin):
+    form = SkillAdminForm
     list_display = ("title", "key", "order", "is_visible")
     list_filter = ("is_visible",)
     search_fields = ("title", "key")
@@ -77,8 +114,19 @@ class SocialLinkAdmin(admin.ModelAdmin):
     search_fields = ("platform", "username", "url")
 
 
+class ResumeAdminForm(forms.ModelForm):
+    class Meta:
+        model = Resume
+        fields = "__all__"
+
+    def clean_file(self):
+        val = self.cleaned_data.get("file")
+        return val if val else None
+
+
 @admin.register(Resume)
 class ResumeAdmin(admin.ModelAdmin):
+    form = ResumeAdminForm
     list_display = ("title", "is_current", "uploaded_at")
     list_filter = ("is_current",)
     readonly_fields = ("uploaded_at",)
@@ -150,7 +198,7 @@ class BlogPostAdminForm(forms.ModelForm):
 
     def clean_featured_image(self):
         val = self.cleaned_data.get("featured_image")
-        return val if val else ""
+        return val if val else None
 
 
 

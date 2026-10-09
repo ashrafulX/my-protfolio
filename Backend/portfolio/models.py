@@ -34,6 +34,8 @@ class Profile(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
+        if not self.profile_image:
+            self.profile_image = None
         if self.pk is None and Profile.objects.exists():
             self.pk = Profile.objects.first().pk
         return super().save(*args, **kwargs)
@@ -79,6 +81,10 @@ class Project(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
+        if not self.logo_image:
+            self.logo_image = None
+        if not self.featured_image:
+            self.featured_image = None
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -137,6 +143,11 @@ class Skill(models.Model):
     class Meta:
         ordering = ["order", "title"]
 
+    def save(self, *args, **kwargs):
+        if not self.icon:
+            self.icon = None
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.title
 
@@ -164,6 +175,8 @@ class Resume(models.Model):
     uploaded_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
+        if not self.file:
+            self.file = None
         if self.is_current:
             Resume.objects.exclude(pk=self.pk).update(is_current=False)
         super().save(*args, **kwargs)
@@ -260,7 +273,7 @@ class BlogPost(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     excerpt = models.TextField(blank=True)
     content = models.TextField(blank=True, help_text="Markdown is supported by the frontend.")
-    featured_image = CloudinaryField("image", folder="blog", blank=True, null=False, default="")
+    featured_image = CloudinaryField("image", folder="blog", blank=True, null=True)
     author = models.CharField(max_length=160, blank=True)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL, related_name="posts")
     tags = models.ManyToManyField(Tag, blank=True, related_name="posts")
@@ -283,7 +296,7 @@ class BlogPost(models.Model):
         if self.status == self.Status.PUBLISHED and not self.published_at:
             self.published_at = timezone.now()
         if not self.featured_image:
-            self.featured_image = ""
+            self.featured_image = None
         if self.content:
             plain_text = re.sub(r"<[^>]+>", " ", self.content)
             self.reading_time = max(1, math.ceil(len(re.findall(r"\w+", plain_text)) / 200))
