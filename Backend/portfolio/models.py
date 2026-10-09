@@ -35,7 +35,7 @@ class Profile(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.profile_image:
-            self.profile_image = None
+            self.profile_image = ""
         if self.pk is None and Profile.objects.exists():
             self.pk = Profile.objects.first().pk
         return super().save(*args, **kwargs)
@@ -82,9 +82,9 @@ class Project(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         if not self.logo_image:
-            self.logo_image = None
+            self.logo_image = ""
         if not self.featured_image:
-            self.featured_image = None
+            self.featured_image = ""
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -145,7 +145,7 @@ class Skill(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.icon:
-            self.icon = None
+            self.icon = ""
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -176,7 +176,7 @@ class Resume(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.file:
-            self.file = None
+            self.file = ""
         if self.is_current:
             Resume.objects.exclude(pk=self.pk).update(is_current=False)
         super().save(*args, **kwargs)
@@ -296,7 +296,7 @@ class BlogPost(models.Model):
         if self.status == self.Status.PUBLISHED and not self.published_at:
             self.published_at = timezone.now()
         if not self.featured_image:
-            self.featured_image = None
+            self.featured_image = ""
         if self.content:
             plain_text = re.sub(r"<[^>]+>", " ", self.content)
             self.reading_time = max(1, math.ceil(len(re.findall(r"\w+", plain_text)) / 200))

@@ -11,7 +11,7 @@ class ProfileAdminForm(forms.ModelForm):
 
     def clean_profile_image(self):
         val = self.cleaned_data.get("profile_image")
-        return val if val else None
+        return val if val else ""
 
 
 @admin.register(Profile)
@@ -54,11 +54,11 @@ class ProjectAdminForm(forms.ModelForm):
 
     def clean_logo_image(self):
         val = self.cleaned_data.get("logo_image")
-        return val if val else None
+        return val if val else ""
 
     def clean_featured_image(self):
         val = self.cleaned_data.get("featured_image")
-        return val if val else None
+        return val if val else ""
 
 
 @admin.register(Project)
@@ -95,7 +95,7 @@ class SkillAdminForm(forms.ModelForm):
 
     def clean_icon(self):
         val = self.cleaned_data.get("icon")
-        return val if val else None
+        return val if val else ""
 
 
 @admin.register(Skill)
@@ -121,7 +121,7 @@ class ResumeAdminForm(forms.ModelForm):
 
     def clean_file(self):
         val = self.cleaned_data.get("file")
-        return val if val else None
+        return val if val else ""
 
 
 @admin.register(Resume)
@@ -198,7 +198,7 @@ class BlogPostAdminForm(forms.ModelForm):
 
     def clean_featured_image(self):
         val = self.cleaned_data.get("featured_image")
-        return val if val else None
+        return val if val else ""
 
 
 
